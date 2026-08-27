@@ -1,9 +1,633 @@
-===== DATAPOSTING DEPENDENCY MAP =====
-
 ===== IMPORTS =====
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Base64;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.webkit.ProxyConfig;
+import androidx.webkit.internal.AssetHelper;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-===== ROBOTTA CLASS REFERENCES =====
+===== R RESOURCE REFERENCES =====
+R.id.btnAddKategori
+R.id.btnAddSlot
+R.id.btnBackDataPosting
+R.id.btnBuatFrameGambar1
+R.id.btnCancelGambar1Progress
+R.id.btnCancelGambar2Progress
+R.id.btnCariLokasi
+R.id.btnClearData
+R.id.btnClearKategoriTerpilih
+R.id.btnConvertUnicode
+R.id.btnExpandDeskripsi
+R.id.btnExpandGambar1
+R.id.btnExpandGambar2
+R.id.btnExpandHashtag
+R.id.btnExpandJudul
+R.id.btnExpandLokasi
+R.id.btnExportData
+R.id.btnImportData
+R.id.btnOpenAiDialog
+R.id.btnPilihGambar1
+R.id.btnRenameSlot
+R.id.btnResetUnicode
+R.id.btnSaveData
+R.id.btnTanpaFrameGambar1
+R.id.btnUploadGambar2NoFrame
+R.id.checkRandomGambar1
+R.id.checkRandomLokasi
+R.id.editDelay
+R.id.editDeskripsi
+R.id.editGambar1
+R.id.editGambar1Duplicate
+R.id.editGambar2
+R.id.editHarga
+R.id.editHashtag
+R.id.editJudul
+R.id.editKategoriTerpilih
+R.id.editLokasi
+R.id.layoutGambar1Progress
+R.id.layoutGambar2Progress
+R.id.progressGambar1
+R.id.progressGambar2
+R.id.rootDataPosting
+R.id.spinnerDataSlot
+R.id.spinnerKategori
+R.id.spinnerKondisi
+R.id.spinnerUnicodeStyle
+R.id.textGambar1Count
+R.id.textGambar1ImportInfo
+R.id.textGambar1Numbers
+R.id.textGambar1Progress
+R.id.textGambar2Count
+R.id.textGambar2ImportInfo
+R.id.textGambar2Numbers
+R.id.textGambar2Progress
+R.id.textJudulCount
+R.id.textJudulNumbers
+R.id.textLokasiCount
+R.id.textLokasiNumbers
+R.id.topBarDataPosting
+R.layout.activity_data_posting
 
-===== R.* RESOURCE REFERENCES =====
+===== PROJECT CLASS REFERENCES =====
+AlertDialog
+AppCompatActivity
+AppThemeManager
+AssetHelper
+ClipData
+ComponentActivity
+DataPostingActivity
+ExecutorService
+FragmentActivity
+IOException
+InterruptedException
+JSONException
+LocalHtmlViewerActivity
+NumberFormatException
+RetryableException
+SecurityException
+SpinnerAdapter
+ThemedSpinnerAdapter
+UnsupportedOperationException
+UploadCancelledException
 
-===== LOCAL ROBOTTA JAVA CLASSES =====
+===== STRING LITERALS / ENDPOINTS =====
+"https://raw.githubusercontent.com/Raisrahman37/Linktautan/main/Link%20Gambar%20Tautan.txt"
+"https://raw.githubusercontent.com/Raisrahman37/Linktautan/main/Png%20Link.txt"
+"https://script.google.com/macros/s/AKfycbxgmbXWGA2QWh8UWJg3mcoi-cOJkmZ5SiYeHXZe-mGOpE-eLIDYs88uu1DZACR7N6kS/exec"
+"https://integrate.api.nvidia.com/v1/chat/completions"
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vRoHHzJ4vovorugMtI30o_LAE0n6rPwScpTL25xM-QPLPL-Gr32GLXMAw3qtJEMMBES0FXmLeRsl44I/pub?output=csv"
+
+===== METHOD DECLARATIONS =====
+private TextView getLineNumberView(EditText editText) {
+if (editText == this.editJudul) {
+if (editText == this.editGambar1) {
+if (editText == this.editGambar2) {
+if (editText == this.editLokasi) {
+protected void onCreate(Bundle bundle) {
+private void buildAiOverlay() {
+if (viewGroup instanceof LinearLayout) {
+private void showAiOverlay() {
+public final void run() {
+if (this.aiOverlay != null) {
+public final void run() {
+if (frameLayout != null) {
+private void updateAiOverlayProgress(final int i, final String str) {
+public final void run() {
+if (progressBar != null) {
+if (textView != null) {
+if (textView2 != null) {
+private void bindViews() {
+private void setupSlotSpinner() {
+private void setupKategoriSpinner() {
+public void onNothingSelected(AdapterView<?> adapterView) {
+public void onItemSelected(AdapterView<?> adapterView, View view, int i, long j) {
+if (DataPostingActivity.this.suppressKategoriListener) {
+if (!DataPostingActivity.this.kategoriSelectionInitialized) {
+private void setupUnicodeSpinner() {
+private void setupKondisiSpinner() {
+private void applyCurrentTheme() {
+if (themedSpinnerAdapter != null) {
+if (themedSpinnerAdapter2 != null) {
+if (themedSpinnerAdapter3 != null) {
+if (themedSpinnerAdapter4 != null) {
+private void tintTree(ViewGroup viewGroup) {
+if (id == R.id.rootDataPosting || id == R.id.topBarDataPosting) {
+if (childAt instanceof ViewGroup) {
+if (childAt.getBackground() != null && !(childAt instanceof ProgressBar)) {
+if (isPlainInnerEditor(childAt)) {
+if (z) {
+if (id != R.id.btnClearData && id != R.id.btnClearKategoriTerpilih) {
+if (z4) {
+if (isPlainInnerEditor(editText)) {
+if (id == R.id.textGambar1Progress || id == R.id.textGambar2Progress) {
+if (childAt instanceof ViewGroup) {
+private void styleButton(Button button, boolean z, boolean z2) {
+if (button.getId() == R.id.btnCancelGambar1Progress || button.getId() == R.id.btnCancelGambar2Progress) {
+if (button.getId() == R.id.btnOpenAiDialog) {
+private String darken(String str) {
+private boolean isPlainInnerEditor(View view) {
+private void setupListeners() {
+findViewById(R.id.btnBackDataPosting).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnRenameSlot).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnAddSlot).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnSaveData).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnClearData).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnExportData).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnImportData).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnAddKategori).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnClearKategoriTerpilih).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnOpenAiDialog).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnConvertUnicode).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnResetUnicode).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnPilihGambar1).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnBuatFrameGambar1).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnTanpaFrameGambar1).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+findViewById(R.id.btnUploadGambar2NoFrame).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+public final void onClick(View view) {
+public final void onClick(View view) {
+findViewById(R.id.btnCariLokasi).setOnClickListener(new View.OnClickListener() {
+public final void onClick(View view) {
+public void onNothingSelected(AdapterView<?> adapterView) {
+public void onItemSelected(AdapterView<?> adapterView, View view, int i, long j) {
+if (DataPostingActivity.this.suppressSlotListener || i < 0 || i >= DataPostingActivity.this.slotItems.size()) {
+private void setupPickers() {
+public final void onActivityResult(Object obj) {
+public final void onActivityResult(Object obj) {
+public final void onActivityResult(Object obj) {
+public final void onActivityResult(Object obj) {
+public final void onActivityResult(Object obj) {
+public final void onActivityResult(Object obj) {
+if (uri != null && (str = this.pendingExportJson) != null) {
+if (uri != null) {
+if (list == null || list.isEmpty()) {
+if (list == null || list.isEmpty()) {
+if (activityResult.getResultCode() != -1) {
+if (listExtractUrisFromPickerResult.isEmpty()) {
+if (activityResult.getResultCode() != -1) {
+if (listExtractUrisFromPickerResult.isEmpty()) {
+private void launchGambar1UploadPicker() {
+private void launchGambar2UploadPicker() {
+private List<Uri> extractUrisFromPickerResult(Intent intent) {
+if (intent == null) {
+if (data != null) {
+if (clipData != null) {
+if (uri != null) {
+private List<Uri> persistAndFilterUris(List<Uri> list) {
+for (Uri uri : list) {
+if (uri != null) {
+private void setupScrollableEditors() {
+private void configureScrollableEditor(final EditText editText) {
+public final void onScrollChange(View view, int i, int i2, int i3, int i4) {
+if (lineNumberView != null) {
+private void configureCopyableField(EditText editText) {
+public final boolean onTouch(View view, MotionEvent motionEvent) {
+if (parent != null) {
+if (motionEvent.getAction() == 0 || motionEvent.getAction() == 2) {
+private void configureLineNumberView(TextView textView) {
+private void setupLineCounters() {
+private void attachLineCounter(final EditText editText, final TextView textView) {
+public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+public void afterTextChanged(Editable editable) {
+if (editText == DataPostingActivity.this.editJudul) {
+public void updateLineCount(EditText editText, TextView textView) {
+if (lineNumberView != null) {
+private String buildLineNumbers(int i) {
+if (i2 > 1) {
+private int dpToPx(int i) {
+private void rebuildDataSlotOptions(String str) {
+for (String str2 : allDataSlotValues) {
+if (slotHasSavedContent(str2)) {
+if (arrayList.isEmpty()) {
+for (String str3 : arrayList) {
+if (!arrayList.contains(str)) {
+private int findSlotIndex(String str) {
+if (this.slotItems.get(i).value.equals(str)) {
+private List<String> getAllDataSlotValues() {
+private boolean slotHasSavedContent(String str) {
+if (string == null || string.trim().isEmpty()) {
+if (jSONArrayNames == null) {
+if (objOpt != null && objOpt.toString().trim().length() > 0) {
+private String getSlotName(String str) {
+private void renameSlot() {
+public final void onClick(DialogInterface dialogInterface, int i) {
+if (strTrim.isEmpty()) {
+private void addSlot() {
+while (true) {
+if (!allDataSlotValues.contains("data" + i) || i > 1000) {
+if (i > 1000) {
+private boolean validateMultiNumberField(EditText editText, String str) {
+for (String str2 : editText.getText().toString().split("\n")) {
+if (!strTrim.isEmpty() && !strTrim.matches("^\\d+$")) {
+private void saveData() {
+if (persistCurrentForm()) {
+private boolean persistCurrentForm() {
+if (!validateMultiNumberField(this.editHarga, "Harga") || !validateMultiNumberField(this.editDelay, "Delay")) {
+if (!this.prefs.edit().putString(this.currentSlotValue, jSONObject.toString()).commit()) {
+public void loadData() {
+if (string != null && !string.trim().isEmpty()) {
+private void clearFormFields() {
+private JSONArray toJsonArray(List<Uri> list) {
+for (Uri uri : list) {
+if (uri != null) {
+private void restorePersistedUris(JSONArray jSONArray, List<Uri> list) {
+if (jSONArray == null) {
+if (!strTrim.isEmpty()) {
+private void selectKategori(String str) {
+if (iIndexOf >= 0) {
+private void selectKondisi(String str) {
+if (iIndexOf >= 0) {
+public void addSelectedKategori() {
+if (!strTrim.isEmpty()) {
+if (arrayList.contains(string)) {
+if (strTrim.isEmpty()) {
+private void openAiDialog() {
+public final void onShow(DialogInterface dialogInterface) {
+public final void onClick(View view) {
+if (strTrim.isEmpty()) {
+private void generateAiContent(final String str, final int i, final String str2, final boolean z, final boolean z2) {
+public final void run() throws Throwable {
+for (String str3 : strMakeGroqRequest3.split("\n")) {
+if (!strReplaceAll.isEmpty()) {
+if (arrayList.size() >= 5) {
+while (it.hasNext()) {
+for (String str4 : strMakeGroqRequest4.split("\n")) {
+if (!strReplaceAll2.isEmpty() && KATEGORI_OPTIONS.contains(strReplaceAll2) && !arrayList2.contains(strReplaceAll2)) {
+if (arrayList2.size() >= 5) {
+if (z) {
+if (!str2.isEmpty() && z2) {
+if (!str2.isEmpty()) {
+public final void run() {
+public final void run() {
+if (!str3.isEmpty()) {
+if (!str4.isEmpty()) {
+public final void run() {
+private String makeGroqRequest(String str) throws Throwable {
+while (true) {
+if (i <= 5) {
+if (outputStream != null) {
+if (responseCode >= 400) {
+if (inputStream == null) {
+if (inputStream != null) {
+if (responseCode == 429 || responseCode == 503) {
+if (responseCode >= 400) {
+if (jSONArrayOptJSONArray == null || jSONArrayOptJSONArray.length() == 0) {
+if (strTrim.isEmpty()) {
+if (httpURLConnection != null) {
+if (inputStream != null) {
+if (outputStream != null) {
+if (httpURLConnection != null) {
+if (i < 5) {
+if (isTransientAiError(e)) {
+if (httpURLConnection != null) {
+if (httpURLConnection2 != null) {
+if (httpURLConnection != null) {
+if (e != null) {
+if (httpURLConnection2 != null) {
+if (e != null) {
+private List<String> splitNonEmptyLines(String str) {
+for (String str2 : str.split("\n")) {
+if (!strTrim.isEmpty()) {
+private void updateSelectedImageInfo(int i) {
+if (list.isEmpty()) {
+private void updateImageProgress(int i, final boolean z, final String str) {
+public final void run() {
+private void processImageUpload(final int i, final boolean z) {
+if (list.isEmpty()) {
+if (future != null && !future.isDone()) {
+if (i == 1) {
+public final void run() throws Throwable {
+if (strUploadImageToServer != null && !strUploadImageToServer.trim().isEmpty()) {
+if (message == null || message.trim().isEmpty()) {
+while (it.hasNext()) {
+if (str != null && !str.trim().isEmpty()) {
+if (i == 1) {
+if (atomicInteger.get() > 0 && list2.isEmpty()) {
+if (atomicInteger.get() > 0) {
+private void requestCancelUpload(int i) {
+if (future == null || future.isDone()) {
+if (i == 1) {
+synchronized (this.currentUploadFutures) {
+for (Future<String> future2 : this.currentUploadFutures) {
+if (future2 != null) {
+if (executorService != null) {
+private void throwIfUploadCancelled(int i) throws UploadCancelledException {
+if ((i == 1 && this.cancelUploadGambar1.get()) || ((i == 2 && this.cancelUploadGambar2.get()) || Thread.currentThread().isInterrupted())) {
+private UploadCancelledException() {
+private byte[] prepareImageBytes(Uri uri, boolean z) throws IOException {
+if (bitmapDecodeStream == null) {
+if (z) {
+if (inputStreamOpenInputStream != null) {
+if (inputStreamOpenInputStream != null) {
+private Bitmap addMarketplaceFrame(Bitmap bitmap) throws IOException {
+private void ensureImageAssetsLoaded(boolean z) throws IOException {
+if (z) {
+if (this.availableFrameImageUrls.isEmpty()) {
+if (this.availablePngUrls.isEmpty()) {
+private List<String> loadUrlsFromGithub(String str) throws IOException {
+for (String str2 : readStreamFully(inputStream).split("\n")) {
+if (!strTrim.isEmpty()) {
+if (inputStream != null) {
+if (inputStream != null) {
+private void addFrame(Canvas canvas, int i, int i2, int i3) throws IOException {
+if (!this.availableFrameImageUrls.isEmpty()) {
+private void addRandomPng(Canvas canvas, int i, int i2) {
+if (this.availablePngUrls.isEmpty()) {
+if (bitmapDownloadBitmapFromUrl == null) {
+private Bitmap downloadBitmapFromUrl(String str) throws IOException {
+if (bitmap != null && !bitmap.isRecycled()) {
+if (bitmapDecodeStream == null) {
+if (inputStream != null) {
+if (inputStream != null) {
+private int getRandomColor() {
+private String buildUploadFilename(Uri uri, boolean z, int i) {
+if (lastPathSegment == null || lastPathSegment.trim().isEmpty()) {
+private String uploadImageToServer(byte[] bArr, String str) throws IOException {
+if (outputStream != null) {
+if (responseCode >= 300 && responseCode < 400) {
+if (headerField != null && !headerField.isEmpty()) {
+if (httpURLConnection2.getResponseCode() >= 400) {
+if (inputStream == null) {
+if (inputStream != null) {
+if (inputStream != null) {
+if (responseCode >= 400) {
+if (errorStream != null) {
+if (errorStream != null) {
+if (errorStream != null) {
+if (inputStream2 == null) {
+if (inputStream2 != null) {
+if (inputStream2 != null) {
+if (outputStream != null) {
+private String parseUploadResponse(String str) throws IOException {
+if (strTrim.isEmpty()) {
+if (isValidHttpUrl(strTrim)) {
+if (strOptString.isEmpty() && jSONObject.has("data")) {
+if (objOpt instanceof JSONObject) {
+if (isValidHttpUrl(strOptString)) {
+if (!strOptString2.trim().isEmpty()) {
+private boolean isValidHttpUrl(String str) {
+private String extractReadableError(String str) {
+if (strTrim.isEmpty()) {
+if (!strTrim.startsWith("<!DOCTYPE html") && !strTrim.startsWith("<html")) {
+if (!matcher.find()) {
+private void registerActiveUploadConnection(HttpURLConnection httpURLConnection) {
+if (httpURLConnection != null) {
+private void unregisterActiveUploadConnection(HttpURLConnection httpURLConnection) {
+if (httpURLConnection != null) {
+private void disconnectActiveUploadConnections() {
+synchronized (this.activeUploadConnections) {
+while (it.hasNext()) {
+private String joinLines(List<String> list) {
+if (i > 0) {
+private void convertJudulToUnicode() {
+if (string.trim().isEmpty()) {
+if (this.originalJudulBeforeUnicode.isEmpty()) {
+private void resetUnicode() {
+if (this.originalJudulBeforeUnicode.isEmpty()) {
+private String applyUnicodeStyle(String str, String str2) {
+if (map == null) {
+while (matcher.find()) {
+while (i3 < string2.length()) {
+if (string2.startsWith("__PHONE_", i3) && (iIndexOf = string2.indexOf("__", i3 + 8)) > i3) {
+if ("mixed".equals(str2)) {
+private String mapMixedChar(char c, Random random) {
+for (String str : UNICODE_STYLES) {
+if (!"mixed".equals(str) && (map = UNICODE_STYLE_MAP.get(str)) != null && map.containsKey(Character.valueOf(c))) {
+if (arrayList.isEmpty()) {
+public void maybeResetUnicodeState() {
+if (this.originalJudulBeforeUnicode.isEmpty() || this.editJudul.getText().length() >= this.originalJudulBeforeUnicode.length() * 0.5f) {
+private void openLokasiDialog() {
+public final void onClick(DialogInterface dialogInterface, int i3) {
+public void beforeTextChanged(CharSequence charSequence, int i3, int i4, int i5) {
+public void onTextChanged(CharSequence charSequence, int i3, int i4, int i5) {
+public void afterTextChanged(Editable editable) {
+public final void onShow(DialogInterface dialogInterface) {
+public final void onClick(View view) {
+if (this.lokasiData.isEmpty()) {
+loadLokasiData(false, new Runnable() {
+public final void run() {
+loadLokasiData(true, new Runnable() {
+public final void run() {
+public void updateLokasiSearchResult(String str, TextView textView, LinearLayout linearLayout) {
+if (this.lokasiData.isEmpty()) {
+if (lowerCase.length() < 2) {
+for (String str2 : this.lokasiData) {
+if (str2.toLowerCase(Locale.ROOT).contains(lowerCase)) {
+if (arrayList.size() >= 30) {
+if (arrayList.isEmpty()) {
+for (final String str3 : arrayList) {
+public final void onCheckedChanged(CompoundButton compoundButton, boolean z) {
+if (z) {
+private void applySelectedLokasi() {
+private void syncSelectedLokasiFromField() {
+while (it.hasNext()) {
+private void addInfoText(LinearLayout linearLayout, String str) {
+private void loadLokasiData(boolean z, final Runnable runnable) {
+if (z || this.lokasiData.isEmpty()) {
+public final void run() {
+for (String str : readStreamFully(inputStream).split("\n")) {
+if (!strReplace.isEmpty()) {
+if (inputStream != null) {
+public final void run() {
+if (inputStream != null) {
+public final void run() {
+if (runnable != null) {
+private String normalizeKeywordList(String str) {
+for (String str2 : str.split(",")) {
+if (!strTrim.isEmpty()) {
+if (i > 0) {
+private boolean isTransientAiError(IOException iOException) {
+if (message == null) {
+private void sleepBeforeRetry(int i) {
+private void showToast(final String str) {
+public final void run() {
+private String readStreamFully(InputStream inputStream) throws IOException {
+while (true) {
+if (i != -1) {
+private void clearData() {
+public final void onClick(DialogInterface dialogInterface, int i) {
+private void exportData() {
+if (persistCurrentForm()) {
+for (String str : getAllDataSlotValues()) {
+if (string != null && !string.trim().isEmpty()) {
+if (jSONArray.length() == 0) {
+private void importData() {
+private JSONObject makePortableSlotData(JSONObject jSONObject) throws JSONException {
+private void writeExportFile(final Uri uri, final String str) {
+public final void run() {
+if (outputStreamOpenOutputStream == null) {
+public final void run() {
+if (outputStreamOpenOutputStream != null) {
+if (outputStreamOpenOutputStream != null) {
+public final void run() {
+private void readImportFile(final Uri uri) {
+public final void run() {
+if (inputStreamOpenInputStream == null) {
+if (strTrim.isEmpty()) {
+public final void run() {
+if (inputStreamOpenInputStream != null) {
+if (inputStreamOpenInputStream != null) {
+public final void run() {
+private int countImportableSlots(JSONObject jSONObject) throws JSONException {
+if (jSONArrayOptJSONArray != null) {
+if (!DATA_EXPORT_FORMAT.equals(jSONObject.optString("format", ""))) {
+if (jSONObjectOptJSONObject != null && isValidSlotKey(jSONObjectOptJSONObject.optString("slotKey", "")) && jSONObjectOptJSONObject.has("data")) {
+if (i != 0) {
+if (!jSONObject.has("data")) {
+if (jSONObject.optJSONArray("slots") != null) {
+public final void onClick(DialogInterface dialogInterface, int i2) {
+private void applyImport(JSONObject jSONObject) {
+if (jSONArrayOptJSONArray == null) {
+if (jSONObjectOptJSONObject != null) {
+if (isValidSlotKey(strTrim) && jSONObjectOptJSONObject.has("data")) {
+if (!strTrim2.isEmpty()) {
+if (getSlotNumber(strTrim) > 10) {
+if (linkedHashSet.isEmpty()) {
+while (it.hasNext()) {
+if (!linkedHashSet.contains(strOptString)) {
+if (!editorEdit.commit()) {
+private void importLegacySlot(JSONObject jSONObject) throws JSONException, IOException {
+if (!strTrim.isEmpty()) {
+if (!editorEdit.commit()) {
+private JSONObject parsePortableData(Object obj) throws JSONException {
+if (obj instanceof JSONObject) {
+if (obj instanceof String) {
+if (!str.trim().isEmpty()) {
+private LinkedHashSet<String> readAddedSlotSet() {
+if (isValidSlotKey(strOptString) && getSlotNumber(strOptString) > 10) {
+private boolean isValidSlotKey(String str) {
+private int getSlotNumber(String str) {
+if (str != null && str.matches("^data\\d+$")) {
+private String safeErrorMessage(Exception exc) {
+private EditText buildDialogInput(String str, int i) {
+protected void onDestroy() {
+private static Map<String, Map<Character, String>> buildUnicodeStyleMap() {
+private static Map<Character, String> buildStyleMap(String str, String str2) {
+while (i < str.length() && iCharCount < str2.length()) {
+public String toString() {
+SlotItem(String str, String str2) {
+RetryableException(String str, int i) {
+private void setupFullscreenEditorTrigger(final EditText editText, final String str) {
+public final boolean onLongClick(View view) {
+private void setupExpandButton(int i, final EditText editText, final String str) {
+if (viewFindViewById != null) {
+public final void onClick(View view) {
+private void showFullscreenEditor(final EditText editText, final String str) {
+public final void run() {
+public void beforeTextChanged(CharSequence charSequence, int i7, int i8, int i9) {
+public void onTextChanged(CharSequence charSequence, int i7, int i8, int i9) {
+public void afterTextChanged(Editable editable) {
+public final void onClick(View view2) {
+public final void onClick(View view2) {
+if (i > 1) {
