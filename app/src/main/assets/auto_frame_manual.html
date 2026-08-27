@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload dan Modifikasi Gambar (Versi Stabil)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .header-title {
+            margin-bottom: 30px;
+            transform: skew(-10deg);
+        }
+
+        .header-title h2 {
+            font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .header-title a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #uploadForm {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="file"],
+        input[type="number"],
+        input[type="color"],
+        input[type="text"],
+        textarea,
+        select,
+        input[type="range"] {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: bold;
+            transition: border-color 0.3s;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .sub-card {
+            width: 100%;
+            background: linear-gradient(180deg, #fbfcff 0%, #f3f7ff 100%);
+            border: 1px solid #d8e5ff;
+            border-radius: 12px;
+            padding: 16px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
+
+        .sub-card h4 {
+            margin: 0 0 12px;
+            color: #1f3f75;
+            font-size: 15px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .field-hint {
+            display: block;
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            width: 100%;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #a0a0a0;
+            cursor: not-allowed;
+        }
+
+        #stopButton {
+            background-color: #dc3545;
+        }
+
+        #stopButton:hover:not(:disabled) {
+            background-color: #c82333;
+        }
+
+        #progressContainer {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            margin-top: 25px;
+            height: 28px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(45deg, #28a745, #218838);
+            text-align: center;
+            line-height: 28px;
+            color: white;
+            border-radius: 8px;
+            transition: width 0.4s ease;
+        }
+
+        #progress {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        #linkOutput {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            text-align: left;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #linkOutput a {
+            display: block;
+            margin-bottom: 8px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .output-item {
+            display: block;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .output-item.error {
+            color: #b42318;
+            background: #fef3f2;
+            border: 1px solid #fecdca;
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        #previewContainer {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        #previewOutput img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            border: 1px solid #ddd;
+            padding: 8px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 10px 0;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+        }
+
+        .checkbox-label .checkmark {
+            position: relative;
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background-color: #fff;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            margin-right: 12px;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked+.checkmark {
+            background-color: #007bff;
+        }
+
+        .checkbox-label .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 7px;
+            top: 3px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label input[type="checkbox"]:checked+.checkmark:after {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-title">
+            <h2>Robotta By <a href="https://www.azkazamdigital.com" target="_blank"
+                    rel="noopener noreferrer">Azkazamdigital</a></h2>
+        </div>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="fileInput">Pilih Gambar:</label>
+                <input type="file" id="fileInput" multiple required accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-label"><input type="checkbox" id="addFrame"><span
+                        class="checkmark"></span><span>Tambahkan Frame</span></label>
+            </div>
+            <div id="frameOptions" style="display: none; width: 100%;">
+                <div class="form-group"><label for="frameThickness">Ketebalan Frame:</label><input type="number"
+                        id="frameThickness" value="30" min="1" max="500"></div>
+                <div class="form-group"><label for="frameType">Jenis Frame:</label><select id="frameType">
+                        <option value="color">Warna</option>
+                        <option value="image">Gambar</option>
+                    </select></div>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-label"><input type="checkbox" id="addPng"><span
+                        class="checkmark"></span><span>Tambahkan PNG Unik</span></label>
+            </div>
+            <div id="pngOptions" style="display: none; width: 100%;">
+                <div class="form-group"><label for="pngSize">Ukuran PNG:</label><input type="number" id="pngSize"
+                        value="200" min="10" max="700"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-label"><input type="checkbox" id="addText"><span
+                        class="checkmark"></span><span>Tambahkan Teks</span></label>
+            </div>
+            <div id="textOptions" style="display: none; width: 100%;">
+                <div class="sub-card">
+                    <h4>Pengaturan Teks</h4>
+                    <div class="form-group">
+                        <label for="textTemplate">Pilih Template Teks:</label>
+                        <select id="textTemplate">
+                            <option value="">Custom Manual</option>
+                            <option value="promo-bold">1. Promo Bold Putih</option>
+                            <option value="luxury-gold">2. Luxury Gold</option>
+                            <option value="urgent-red">3. Urgent Merah</option>
+                            <option value="clean-black">4. Clean Hitam</option>
+                            <option value="neon-blue">5. Neon Biru</option>
+                            <option value="market-green">6. Marketplace Hijau</option>
+                            <option value="sunset-orange">7. Sunset Oranye</option>
+                            <option value="soft-pink">8. Soft Pink</option>
+                            <option value="badge-yellow">9. Badge Kuning</option>
+                            <option value="dark-banner">10. Banner Gelap</option>
+                        </select>
+                        <span class="field-hint">Template akan otomatis mengatur style teks. Posisi teks default selalu
+                            di tengah.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="textContent">Isi Teks:</label>
+                        <textarea id="textContent" placeholder="Masukkan teks di sini
+Bisa lebih dari satu baris"></textarea>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group"><label for="textFontFamily">Font Teks:</label><select
+                                id="textFontFamily">
+                                <option value="Arial, sans-serif">Arial</option>
+                                <option value="Trebuchet MS, sans-serif">Trebuchet</option>
+                                <option value="Segoe UI, sans-serif">Segoe UI</option>
+                                <option value="Tahoma, sans-serif">Tahoma</option>
+                                <option value="Verdana, sans-serif">Verdana</option>
+                                <option value="Impact, sans-serif">Impact</option>
+                                <option value="Georgia, serif">Georgia</option>
+                                <option value="Times New Roman, serif">Times New Roman</option>
+                            </select></div>
+                        <div class="form-group"><label for="textSize">Ukuran Teks:</label><input type="number"
+                                id="textSize" value="40" min="10" max="200"></div>
+                    </div>
+                </div>
+
+                <select id="textPosition" hidden>
+                    <option value="center" selected>Tengah</option>
+                </select>
+                <input type="hidden" id="textLineSpacing" value="1.2">
+                <input type="hidden" id="textColor" value="#ffffff">
+                <input type="hidden" id="textPadding" value="18">
+                <input type="hidden" id="textOutlineWidth" value="4">
+                <input type="hidden" id="textOutlineColor" value="#000000">
+                <input type="hidden" id="textBackgroundColor" value="#000000">
+                <input type="hidden" id="textBackgroundRadius" value="18">
+                <input type="hidden" id="textBackgroundOpacity" value="55">
+                <input type="checkbox" id="textShadow" hidden>
+                <input type="checkbox" id="textOutlineEnabled" checked hidden>
+                <input type="checkbox" id="textBackgroundEnabled" hidden>
+            </div>
+
+            <div class="form-group">
+                <label for="duplicateCount">Jumlah Duplikat per Gambar:</label>
+                <input type="number" id="duplicateCount" value="1" min="1" max="500">
+            </div>
+
+            <div class="button-group">
+                <button type="submit" id="submitButton">Upload</button>
+                <button type="button" id="stopButton">Stop</button>
+            </div>
+        </form>
+
+        <div id="progressContainer">
+            <div id="progressBar">0%</div>
+        </div>
+        <p id="progress"></p>
+        <div id="linkOutput"></div>
+        <div class="action-buttons">
+            <button id="copyLinks">Salin Semua Link</button>
+            <button id="downloadAll">Download Semua Gambar</button>
+        </div>
+        <div id="previewContainer">
+            <h3>Preview Gambar</h3>
+            <div id="previewOutput"></div>
+        </div>
+
+        <footer style="margin-top: 40px; padding: 20px; text-align: center; width: 100%;">
+            <a href="https://www.azkazamdigital.com" style="color: #555; text-decoration: none; font-weight: bold;"
+                target="_blank">Hak Cipta &copy; 2026 www.azkazamdigital.com</a>
+        </footer>
+
+        <canvas id="canvas"></canvas>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+        <script>
+            // --- Inisialisasi & Konstanta ---
+            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgmbXWGA2QWh8UWJg3mcoi-cOJkmZ5SiYeHXZe-mGOpE-eLIDYs88uu1DZACR7N6kS/exec";
+            const GITHUB_FRAME_IMAGE_URL = "https://raw.githubusercontent.com/Raisrahman37/Linktautan/main/Link%20Gambar%20Tautan.txt";
+            const GITHUB_PNG_IMAGE_URL = "https://raw.githubusercontent.com/Raisrahman37/Linktautan/main/Png%20Link.txt";
+            const MAX_PARALLEL_UPLOADS = 30;
+            const TEXT_STYLE_TEMPLATES = {
+                "promo-bold": { textSize: 48, textLineSpacing: 1.15, textColor: "#ffffff", textPosition: "bottom-center", textShadow: true, textFontFamily: "Impact, sans-serif", textOutlineEnabled: true, textOutlineWidth: 6, textOutlineColor: "#0f172a", textBackgroundEnabled: true, textBackgroundColor: "#1d4ed8", textBackgroundOpacity: 70, textBackgroundRadius: 22, textPadding: 22 },
+                "luxury-gold": { textSize: 44, textLineSpacing: 1.2, textColor: "#facc15", textPosition: "center", textShadow: true, textFontFamily: "Georgia, serif", textOutlineEnabled: true, textOutlineWidth: 3, textOutlineColor: "#3f2b00", textBackgroundEnabled: true, textBackgroundColor: "#111827", textBackgroundOpacity: 58, textBackgroundRadius: 24, textPadding: 20 },
+                "urgent-red": { textSize: 50, textLineSpacing: 1.1, textColor: "#ffffff", textPosition: "top-center", textShadow: true, textFontFamily: "Trebuchet MS, sans-serif", textOutlineEnabled: true, textOutlineWidth: 5, textOutlineColor: "#7f1d1d", textBackgroundEnabled: true, textBackgroundColor: "#dc2626", textBackgroundOpacity: 78, textBackgroundRadius: 16, textPadding: 20 },
+                "clean-black": { textSize: 38, textLineSpacing: 1.25, textColor: "#111111", textPosition: "bottom-left", textShadow: false, textFontFamily: "Segoe UI, sans-serif", textOutlineEnabled: true, textOutlineWidth: 2, textOutlineColor: "#ffffff", textBackgroundEnabled: true, textBackgroundColor: "#ffffff", textBackgroundOpacity: 70, textBackgroundRadius: 14, textPadding: 16 },
+                "neon-blue": { textSize: 46, textLineSpacing: 1.15, textColor: "#38bdf8", textPosition: "center", textShadow: true, textFontFamily: "Verdana, sans-serif", textOutlineEnabled: true, textOutlineWidth: 4, textOutlineColor: "#082f49", textBackgroundEnabled: true, textBackgroundColor: "#020617", textBackgroundOpacity: 62, textBackgroundRadius: 20, textPadding: 18 },
+                "market-green": { textSize: 42, textLineSpacing: 1.2, textColor: "#ffffff", textPosition: "bottom-center", textShadow: true, textFontFamily: "Tahoma, sans-serif", textOutlineEnabled: true, textOutlineWidth: 4, textOutlineColor: "#14532d", textBackgroundEnabled: true, textBackgroundColor: "#16a34a", textBackgroundOpacity: 74, textBackgroundRadius: 18, textPadding: 18 },
+                "sunset-orange": { textSize: 44, textLineSpacing: 1.15, textColor: "#fff7ed", textPosition: "top-right", textShadow: true, textFontFamily: "Arial, sans-serif", textOutlineEnabled: true, textOutlineWidth: 4, textOutlineColor: "#7c2d12", textBackgroundEnabled: true, textBackgroundColor: "#f97316", textBackgroundOpacity: 72, textBackgroundRadius: 18, textPadding: 18 },
+                "soft-pink": { textSize: 40, textLineSpacing: 1.2, textColor: "#831843", textPosition: "top-left", textShadow: false, textFontFamily: "Segoe UI, sans-serif", textOutlineEnabled: true, textOutlineWidth: 2, textOutlineColor: "#ffffff", textBackgroundEnabled: true, textBackgroundColor: "#fbcfe8", textBackgroundOpacity: 75, textBackgroundRadius: 20, textPadding: 18 },
+                "badge-yellow": { textSize: 36, textLineSpacing: 1.1, textColor: "#111827", textPosition: "top-center", textShadow: false, textFontFamily: "Impact, sans-serif", textOutlineEnabled: true, textOutlineWidth: 2, textOutlineColor: "#ffffff", textBackgroundEnabled: true, textBackgroundColor: "#fde047", textBackgroundOpacity: 85, textBackgroundRadius: 30, textPadding: 20 },
+                "dark-banner": { textSize: 46, textLineSpacing: 1.15, textColor: "#ffffff", textPosition: "bottom-center", textShadow: true, textFontFamily: "Trebuchet MS, sans-serif", textOutlineEnabled: true, textOutlineWidth: 3, textOutlineColor: "#000000", textBackgroundEnabled: true, textBackgroundColor: "#111827", textBackgroundOpacity: 82, textBackgroundRadius: 10, textPadding: 22 }
+            };
+            let processedImages = [], availableFrameImageUrls = [], availablePngUrls = [];
+            let isStopped = false;
+
+            // --- Validasi Input ---
+            function validateInput(options) {
+                if (options.frameThickness <= 0 || options.frameThickness > 500) { alert("Ketebalan frame harus antara 1 dan 500."); return false; }
+                if (options.pngSize <= 0 || options.pngSize > 700) { alert("Ukuran PNG harus antara 10 dan 700."); return false; }
+                if (options.duplicateCount <= 0 || options.duplicateCount > 500) { alert("Jumlah duplikat harus antara 1 dan 500."); return false; }
+                if (options.textOutlineWidth < 0 || options.textOutlineWidth > 20) { alert("Ketebalan outline harus antara 0 dan 20."); return false; }
+                if (options.textPadding < 0 || options.textPadding > 100) { alert("Padding background harus antara 0 dan 100."); return false; }
+                if (options.textBackgroundRadius < 0 || options.textBackgroundRadius > 60) { alert("Radius background harus antara 0 dan 60."); return false; }
+                return true;
+            }
+
+            // --- Pemrosesan Gambar ---
+            async function getHighQualityDataUrl(canvas) {
+                return canvas.toDataURL("image/jpeg", 0.92);
+            }
+
+            async function loadUrlsFromGithub(url) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.text();
+                    return data.split('\n').filter(link => link.trim());
+                } catch (error) {
+                    console.error(`Gagal memuat URL dari ${url}:`, error);
+                    alert("Gagal memuat data dari GitHub. Beberapa fitur mungkin tidak berfungsi.");
+                    return [];
+                }
+            }
+
+            async function applyFrame(ctx, canvas, frameThickness, frameType) {
+                if (frameType === 'color') {
+                    const getRandomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+                    ctx.fillStyle = getRandomColor(); ctx.fillRect(0, 0, canvas.width, frameThickness);
+                    ctx.fillStyle = getRandomColor(); ctx.fillRect(0, canvas.height - frameThickness, canvas.width, frameThickness);
+                    ctx.fillStyle = getRandomColor(); ctx.fillRect(0, 0, frameThickness, canvas.height);
+                    ctx.fillStyle = getRandomColor(); ctx.fillRect(canvas.width - frameThickness, 0, frameThickness, canvas.height);
+                } else if (frameType === 'image' && availableFrameImageUrls.length > 0) {
+                    const frameImageUrl = availableFrameImageUrls[Math.floor(Math.random() * availableFrameImageUrls.length)];
+                    try {
+                        const frameImage = await new Promise((resolve, reject) => {
+                            const img = new Image(); img.crossOrigin = "anonymous";
+                            img.onload = () => resolve(img); img.onerror = reject;
+                            img.src = frameImageUrl;
+                        });
+                        ctx.fillStyle = ctx.createPattern(frameImage, 'repeat');
+                        ctx.fillRect(0, 0, canvas.width, frameThickness); ctx.fillRect(0, canvas.height - frameThickness, canvas.width, frameThickness);
+                        ctx.fillRect(0, 0, frameThickness, canvas.height); ctx.fillRect(canvas.width - frameThickness, 0, frameThickness, canvas.height);
+                    } catch (e) { console.error("Gagal memuat gambar frame, kembali ke frame warna."); await applyFrame(ctx, canvas, frameThickness, 'color'); }
+                }
+            }
+
+            async function applyRandomPng(ctx, canvas, pngSize) {
+                if (!availablePngUrls || availablePngUrls.length === 0) return;
+                const pngLink = availablePngUrls[Math.floor(Math.random() * availablePngUrls.length)];
+                try {
+                    const pngImage = await new Promise((resolve, reject) => {
+                        const img = new Image(); img.crossOrigin = "anonymous";
+                        img.onload = () => resolve(img); img.onerror = reject;
+                        img.src = pngLink;
+                    });
+                    const pHeight = pngSize / (pngImage.width / pngImage.height);
+                    ctx.drawImage(pngImage, Math.random() * (canvas.width - pngSize), Math.random() * (canvas.height - pHeight), pngSize, pHeight);
+                } catch (e) { console.error("Gagal memuat atau menggambar PNG."); }
+            }
+
+            function hexToRgba(hex, alpha) {
+                const safeHex = (hex || "#000000").replace("#", "");
+                const normalized = safeHex.length === 3
+                    ? safeHex.split("").map(char => char + char).join("")
+                    : safeHex.padEnd(6, "0").slice(0, 6);
+                const r = parseInt(normalized.slice(0, 2), 16);
+                const g = parseInt(normalized.slice(2, 4), 16);
+                const b = parseInt(normalized.slice(4, 6), 16);
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            }
+
+            function drawRoundedRect(ctx, x, y, width, height, radius) {
+                const safeRadius = Math.max(0, Math.min(radius, width / 2, height / 2));
+                ctx.beginPath();
+                ctx.moveTo(x + safeRadius, y);
+                ctx.lineTo(x + width - safeRadius, y);
+                ctx.quadraticCurveTo(x + width, y, x + width, y + safeRadius);
+                ctx.lineTo(x + width, y + height - safeRadius);
+                ctx.quadraticCurveTo(x + width, y + height, x + width - safeRadius, y + height);
+                ctx.lineTo(x + safeRadius, y + height);
+                ctx.quadraticCurveTo(x, y + height, x, y + height - safeRadius);
+                ctx.lineTo(x, y + safeRadius);
+                ctx.quadraticCurveTo(x, y, x + safeRadius, y);
+                ctx.closePath();
+            }
+
+            function applyTextOverlay(ctx, canvas, options) {
+                if (!options.textContent || !options.textContent.trim()) return;
+                const lines = options.textContent.split('\n').map(line => line.trim()).filter(Boolean);
+                if (lines.length === 0) return;
+
+                const fontSize = parseInt(options.textSize) || 40;
+                const lineSpacing = Number(options.textLineSpacing) || 1.2;
+                const lineHeight = fontSize * lineSpacing;
+                const margin = fontSize;
+                const padding = parseInt(options.textPadding) || 0;
+                const radius = parseInt(options.textBackgroundRadius) || 0;
+                const outlineWidth = options.textOutlineEnabled ? (parseInt(options.textOutlineWidth) || 0) : 0;
+
+                ctx.save();
+                ctx.font = `bold ${fontSize}px ${options.textFontFamily || "Arial, sans-serif"}`;
+                ctx.fillStyle = options.textColor;
+                ctx.strokeStyle = options.textOutlineColor || "#000000";
+                ctx.lineWidth = outlineWidth;
+                ctx.lineJoin = "round";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                if (options.textShadow) {
+                    ctx.shadowColor = 'rgba(0,0,0,0.7)';
+                    ctx.shadowBlur = 5;
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 2;
+                }
+
+                const lineWidths = lines.map(line => ctx.measureText(line).width);
+                const maxLineWidth = Math.max(...lineWidths, 0);
+                const textBlockHeight = lines.length * lineHeight;
+                const boxWidth = maxLineWidth + (padding * 2);
+                const boxHeight = textBlockHeight + (padding * 2);
+
+                let textAlign = "center";
+                let x = canvas.width / 2;
+                let y = canvas.height / 2;
+                let boxX = x - (boxWidth / 2);
+                let boxY = y - (boxHeight / 2);
+
+                switch (options.textPosition) {
+                    case 'top-left':
+                        textAlign = "left"; x = margin + padding; y = margin + padding + (lineHeight / 2);
+                        boxX = margin; boxY = margin; break;
+                    case 'top-right':
+                        textAlign = "right"; x = canvas.width - margin - padding; y = margin + padding + (lineHeight / 2);
+                        boxX = canvas.width - margin - boxWidth; boxY = margin; break;
+                    case 'bottom-left':
+                        textAlign = "left"; x = margin + padding; y = canvas.height - margin - boxHeight + padding + (lineHeight / 2);
+                        boxX = margin; boxY = canvas.height - margin - boxHeight; break;
+                    case 'bottom-right':
+                        textAlign = "right"; x = canvas.width - margin - padding; y = canvas.height - margin - boxHeight + padding + (lineHeight / 2);
+                        boxX = canvas.width - margin - boxWidth; boxY = canvas.height - margin - boxHeight; break;
+                    case 'top-center':
+                        textAlign = "center"; x = canvas.width / 2; y = margin + padding + (lineHeight / 2);
+                        boxX = (canvas.width - boxWidth) / 2; boxY = margin; break;
+                    case 'bottom-center':
+                        textAlign = "center"; x = canvas.width / 2; y = canvas.height - margin - boxHeight + padding + (lineHeight / 2);
+                        boxX = (canvas.width - boxWidth) / 2; boxY = canvas.height - margin - boxHeight; break;
+                    default:
+                        textAlign = "center"; x = canvas.width / 2; y = (canvas.height - textBlockHeight) / 2 + (lineHeight / 2);
+                        boxX = (canvas.width - boxWidth) / 2; boxY = (canvas.height - boxHeight) / 2; break;
+                }
+
+                ctx.textAlign = textAlign;
+
+                if (options.textBackgroundEnabled) {
+                    ctx.save();
+                    ctx.shadowColor = "transparent";
+                    ctx.fillStyle = hexToRgba(options.textBackgroundColor || "#000000", (Number(options.textBackgroundOpacity) || 0) / 100);
+                    drawRoundedRect(ctx, boxX, boxY, boxWidth, boxHeight, radius);
+                    ctx.fill();
+                    ctx.restore();
+                    if (options.textShadow) {
+                        ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 5; ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 2;
+                    }
+                }
+
+                lines.forEach((line, index) => {
+                    const lineY = y + (index * lineHeight);
+                    if (outlineWidth > 0) ctx.strokeText(line, x, lineY);
+                    ctx.fillText(line, x, lineY);
+                });
+                ctx.restore();
+            }
+
+            async function modifyImage(file, options) {
+                const reader = new FileReader();
+                const img = await new Promise((resolve, reject) => {
+                    reader.onload = e => { const i = new Image(); i.onload = () => resolve(i); i.onerror = reject; i.src = e.target.result; };
+                    reader.onerror = reject; reader.readAsDataURL(file);
+                });
+
+                const frameW = options.addFrameEnabled ? options.frameThickness : 0;
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+                canvas.width = img.width + (frameW * 2); canvas.height = img.height + (frameW * 2);
+                ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                if (options.addFrameEnabled) await applyFrame(ctx, canvas, options.frameThickness, options.frameType);
+                ctx.drawImage(img, frameW, frameW);
+                if (options.addPngEnabled) await applyRandomPng(ctx, canvas, options.pngSize);
+                if (options.addTextEnabled) applyTextOverlay(ctx, canvas, options);
+                return await getHighQualityDataUrl(canvas);
+            }
+
+            async function uploadFile(file, index, total, uploadedLinks, options) {
+                if (isStopped) return null;
+                try {
+                    const modifiedDataUrl = await modifyImage(file, options);
+                    updatePreview(modifiedDataUrl, file.name);
+                    processedImages[index] = { name: file.name.replace(/\.[^/.]+$/, ".jpg"), data: modifiedDataUrl };
+
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: "POST",
+                        body: new URLSearchParams({ image: modifiedDataUrl.split(",")[1], mimetype: "image/jpeg", filename: file.name })
+                    });
+                    if (!response.ok) throw new Error(`Server error: ${response.statusText}`);
+                    const rawResponse = (await response.text()).trim();
+                    const parsedResponse = parseUploadResponse(rawResponse);
+                    if (!parsedResponse.ok) throw new Error(parsedResponse.error);
+
+                    uploadedLinks[index] = { type: "link", value: parsedResponse.url, fileName: file.name };
+                    renderOutput(uploadedLinks);
+                    return parsedResponse.url;
+                } catch (error) {
+                    console.error(`Error pada file ${file.name}:`, error);
+                    uploadedLinks[index] = {
+                        type: "error",
+                        value: error.message || "Upload gagal tanpa pesan error.",
+                        fileName: file.name
+                    };
+                    renderOutput(uploadedLinks);
+                    return null;
+                }
+            }
+
+            async function processInParallel(files, options, uploadedLinks) {
+                const total = files.length;
+                const concurrency = Math.max(1, Math.min(MAX_PARALLEL_UPLOADS, total));
+                let nextIndex = 0;
+                let completed = 0;
+                let successCount = 0;
+
+                async function worker() {
+                    while (!isStopped) {
+                        const currentIndex = nextIndex++;
+                        if (currentIndex >= total) break;
+                        const result = await uploadFile(files[currentIndex], currentIndex, total, uploadedLinks, options);
+                        if (result) successCount++;
+                        completed++;
+                        const percent = Math.round((completed / total) * 100);
+                        const status = isStopped
+                            ? `Dihentikan (${completed}/${total})`
+                            : `Diproses ${completed}/${total} | Berhasil ${successCount} | Paralel ${concurrency}`;
+                        updateProgress(status, percent);
+                    }
+                }
+
+                await Promise.all(Array.from({ length: concurrency }, () => worker()));
+                return { completed, successCount, total, concurrency };
+            }
+
+            // --- Update UI ---
+            function updateProgress(message, percent) {
+                document.getElementById("progress").innerText = message;
+                if (percent !== undefined) {
+                    const progressBar = document.getElementById("progressBar");
+                    progressBar.style.width = percent + "%"; progressBar.innerText = percent + "%";
+                }
+            }
+
+            function isValidHttpUrl(value) {
+                try {
+                    const url = new URL((value || "").trim());
+                    return url.protocol === "http:" || url.protocol === "https:";
+                } catch {
+                    return false;
+                }
+            }
+
+            function extractReadableError(rawText) {
+                const trimmed = (rawText || "").trim();
+                if (!trimmed) return "Respons upload kosong.";
+
+                if (trimmed.startsWith("<!DOCTYPE html") || trimmed.startsWith("<html")) {
+                    const doc = new DOMParser().parseFromString(trimmed, "text/html");
+                    const text = (doc.body?.textContent || "").replace(/\s+/g, " ").trim();
+                    const match = text.match(/Exception:\s*(.+?)(?:\s*\(|$)/i);
+                    return match ? `Google Script error: ${match[1].trim()}` : "Upload gagal karena server mengembalikan halaman error, bukan link gambar.";
+                }
+
+                return trimmed;
+            }
+
+            function parseUploadResponse(rawText) {
+                const trimmed = (rawText || "").trim();
+                if (!trimmed) {
+                    return { ok: false, error: "Respons upload kosong." };
+                }
+
+                if (isValidHttpUrl(trimmed)) {
+                    return { ok: true, url: trimmed };
+                }
+
+                if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+                    try {
+                        const parsed = JSON.parse(trimmed);
+                        const candidateUrl = parsed?.url || parsed?.link || parsed?.data?.url || "";
+                        if (isValidHttpUrl(candidateUrl)) {
+                            return { ok: true, url: candidateUrl };
+                        }
+
+                        const errorMessage = parsed?.error || parsed?.message || parsed?.detail;
+                        if (errorMessage) {
+                            return { ok: false, error: String(errorMessage) };
+                        }
+                    } catch {
+                        // Lanjutkan ke parser error biasa.
+                    }
+                }
+
+                return { ok: false, error: extractReadableError(trimmed) };
+            }
+
+            function renderOutput(results) {
+                const output = document.getElementById("linkOutput");
+                output.innerHTML = "";
+
+                results.filter(Boolean).forEach(item => {
+                    if (item.type === "link") {
+                        const link = document.createElement("a");
+                        link.href = item.value;
+                        link.target = "_blank";
+                        link.rel = "noopener noreferrer";
+                        link.className = "output-item";
+                        link.textContent = item.value;
+                        output.appendChild(link);
+                        return;
+                    }
+
+                    const error = document.createElement("div");
+                    error.className = "output-item error";
+                    error.textContent = `${item.fileName}: ${item.value}`;
+                    output.appendChild(error);
+                });
+            }
+
+            function applyTextTemplate(templateKey) {
+                const template = TEXT_STYLE_TEMPLATES[templateKey];
+                if (!template) return;
+                document.getElementById("textSize").value = template.textSize;
+                document.getElementById("textLineSpacing").value = template.textLineSpacing;
+                document.getElementById("textColor").value = template.textColor;
+                document.getElementById("textPosition").value = "center";
+                document.getElementById("textShadow").checked = !!template.textShadow;
+                document.getElementById("textFontFamily").value = template.textFontFamily;
+                document.getElementById("textOutlineEnabled").checked = !!template.textOutlineEnabled;
+                document.getElementById("textOutlineWidth").value = template.textOutlineWidth;
+                document.getElementById("textOutlineColor").value = template.textOutlineColor;
+                document.getElementById("textBackgroundEnabled").checked = !!template.textBackgroundEnabled;
+                document.getElementById("textBackgroundColor").value = template.textBackgroundColor;
+                document.getElementById("textBackgroundOpacity").value = template.textBackgroundOpacity;
+                document.getElementById("textBackgroundRadius").value = template.textBackgroundRadius;
+                document.getElementById("textPadding").value = template.textPadding;
+            }
+
+            function updatePreview(dataUrl, name) {
+                const preview = document.getElementById("previewOutput");
+                preview.innerHTML = "";
+                const img = document.createElement("img");
+                img.src = dataUrl; img.alt = `Preview ${name}`;
+                preview.appendChild(img);
+            }
+            const toggleOptions = (checkboxId, optionsId) => {
+                const checkbox = document.getElementById(checkboxId);
+                const optionsDiv = document.getElementById(optionsId);
+                checkbox.addEventListener("change", () => optionsDiv.style.display = checkbox.checked ? "block" : "none");
+            };
+
+            // --- Event Listeners ---
+            document.addEventListener('DOMContentLoaded', async () => {
+                const form = document.getElementById("uploadForm");
+                const submitBtn = document.getElementById("submitButton");
+                const stopBtn = document.getElementById("stopButton");
+
+                stopBtn.disabled = true;
+                toggleOptions('addFrame', 'frameOptions');
+                toggleOptions('addPng', 'pngOptions');
+                toggleOptions('addText', 'textOptions');
+                document.getElementById("textTemplate").addEventListener("change", (e) => applyTextTemplate(e.target.value));
+
+                [availableFrameImageUrls, availablePngUrls] = await Promise.all([
+                    loadUrlsFromGithub(GITHUB_FRAME_IMAGE_URL),
+                    loadUrlsFromGithub(GITHUB_PNG_IMAGE_URL)
+                ]);
+
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const options = {
+                        addFrameEnabled: document.getElementById("addFrame").checked, frameThickness: parseInt(document.getElementById("frameThickness").value), frameType: document.getElementById("frameType").value,
+                        addPngEnabled: document.getElementById("addPng").checked, pngSize: parseInt(document.getElementById("pngSize").value),
+                        addTextEnabled: document.getElementById("addText").checked, textContent: document.getElementById("textContent").value, textSize: parseInt(document.getElementById("textSize").value), textLineSpacing: parseFloat(document.getElementById("textLineSpacing").value), textColor: document.getElementById("textColor").value, textPosition: document.getElementById("textPosition").value, textShadow: document.getElementById("textShadow").checked, textFontFamily: document.getElementById("textFontFamily").value, textOutlineEnabled: document.getElementById("textOutlineEnabled").checked, textOutlineWidth: parseInt(document.getElementById("textOutlineWidth").value), textOutlineColor: document.getElementById("textOutlineColor").value, textBackgroundEnabled: document.getElementById("textBackgroundEnabled").checked, textBackgroundColor: document.getElementById("textBackgroundColor").value, textBackgroundOpacity: parseInt(document.getElementById("textBackgroundOpacity").value), textBackgroundRadius: parseInt(document.getElementById("textBackgroundRadius").value), textPadding: parseInt(document.getElementById("textPadding").value),
+                        duplicateCount: parseInt(document.getElementById("duplicateCount").value)
+                    };
+                    if (!validateInput(options)) return;
+
+                    const files = Array.from(document.getElementById("fileInput").files);
+                    if (files.length === 0) { alert("Pilih file terlebih dahulu!"); return; }
+
+                    isStopped = false; submitBtn.disabled = true; stopBtn.disabled = false;
+                    document.getElementById("linkOutput").innerHTML = ""; document.getElementById("previewOutput").innerHTML = "";
+                    processedImages = []; updateProgress("Memulai...", 0);
+
+                    const duplicatedFiles = files.flatMap(f => Array.from({ length: options.duplicateCount }, (_, j) => j === 0 ? f : new File([f], f.name.replace(/(\.[\w\d_-]+)$/i, `_salinan${j}$1`), { type: f.type })));
+
+                    const uploadedLinks = new Array(duplicatedFiles.length).fill(null);
+                    const summary = await processInParallel(duplicatedFiles, options, uploadedLinks);
+
+                    processedImages = processedImages.filter(Boolean);
+                    if (!isStopped) {
+                        updateProgress(`Selesai! ${summary.successCount}/${summary.total} berhasil | Paralel ${summary.concurrency}`, 100);
+                    } else {
+                        updateProgress(`Proses dihentikan. ${summary.completed}/${summary.total} selesai diproses.`, Math.round((summary.completed / summary.total) * 100));
+                    }
+                    submitBtn.disabled = false; stopBtn.disabled = true;
+                });
+
+                stopBtn.addEventListener("click", () => isStopped = true);
+
+                document.getElementById("copyLinks").addEventListener("click", () => {
+                    const links = Array.from(document.querySelectorAll("#linkOutput a")).map(a => a.href).join("\n");
+                    if (links) navigator.clipboard.writeText(links).then(() => alert("Semua link berhasil disalin!"));
+                    else alert("Tidak ada link untuk disalin.");
+                });
+
+                document.getElementById("downloadAll").addEventListener("click", () => {
+                    if (processedImages.length === 0) { alert("Tidak ada gambar untuk diunduh!"); return; }
+                    if (typeof JSZip === 'undefined') { alert("Library JSZip belum dimuat. Pastikan koneksi internet aktif lalu coba lagi."); return; }
+                    const zip = new JSZip();
+                    processedImages.forEach(img => zip.file(img.name, img.data.split(",")[1], { base64: true }));
+                    zip.generateAsync({ type: "blob" }).then(content => {
+                        const a = document.createElement("a");
+                        a.href = URL.createObjectURL(content); a.download = "gambar_hasil_modifikasi.zip";
+                        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                    });
+                });
+            });
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,3780 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DATA POSTING ROBOTTA</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    xintegrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Mengatur ukuran dan format huruf DATA POSTING ROBOTTA */
+    h2 {
+      color: #343a40;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+      color: #000;
+      background-color: rgba(0, 123, 255, 0.25);
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      max-width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      box-sizing: border-box;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+      -webkit-touch-callout: default;
+    }
+
+    /* Style untuk dropdown icon */
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23666" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 12px;
+      padding-right: 30px;
+    }
+
+    /* Style khusus untuk unicodeStyleSelect yang lebih kecil */
+    #unicodeStyleSelect {
+      background-size: 10px;
+      padding-right: 25px;
+    }
+
+    textarea::placeholder,
+    input::placeholder,
+    textarea,
+    input {
+      font-size: 0.9rem;
+    }
+
+    /* CSS untuk membuat font di textarea menjadi hitam dan bold */
+    #judul,
+    #gambar1,
+    #gambar2,
+    #lokasi {
+      color: #000000 !important;
+      font-weight: bold !important;
+      font-family: 'Segoe UI', Arial, sans-serif !important;
+      /* Horizontal scrollbar properties */
+      white-space: nowrap !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      text-overflow: clip !important;
+    }
+
+    /* Placeholder tetap abu-abu untuk kontras */
+    #judul::placeholder,
+    #gambar1::placeholder,
+    #gambar2::placeholder,
+    #lokasi::placeholder {
+      color: #6c757d !important;
+      font-weight: normal !important;
+      font-style: italic;
+    }
+
+    .btn {
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-ubah-nama {
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+
+    .btn-ubah-nama:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    #importFile {
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    input,
+    textarea,
+    select,
+    .btn {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-file-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .custom-file-label {
+      position: relative;
+      padding: 0.375rem 0.75rem;
+      background-color: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      text-align: left;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    .custom-file-label::after {
+      content: "Pilih file";
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0.375rem 0.75rem;
+      background-color: #007bff;
+      color: #fff;
+      border-left: 1px solid #ced4da;
+    }
+
+    .line-count {
+      font-size: 0.8rem;
+      color: #6c757d;
+      font-weight: bold;
+    }
+
+    /* Style untuk tombol AI di dalam form judul */
+    .judul-ai-container {
+      display: flex; /* Menggunakan Flexbox */
+      align-items: flex-start; /* Vertikal menengahkan tombol */
+      justify-content: space-between; /* Tombol ke kanan, hitungan baris ke kiri */
+      flex-wrap: wrap; /* Memungkinkan wrap di layar kecil */
+      gap: 0.5rem; /* Jarak antar elemen */
+    }
+
+    .judul-ai-button {
+      text-align: right; /* Rata kanan untuk konsistensi */
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Responsive untuk layar kecil */
+    @media (max-width: 768px) {
+      .judul-ai-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .judul-ai-button {
+        flex-direction: column;
+        text-align: left;
+        width: 100%;
+      }
+      
+      .judul-ai-button select {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .judul-ai-button .btn {
+      font-size: 0.7rem; /* Ukuran lebih kecil */
+      padding: 0.2rem 0.5rem; /* Padding lebih kecil */
+      margin-left: 0.25rem; /* Jarak antar tombol */
+      white-space: nowrap; /* Mencegah text wrap */
+    }
+
+    /* Responsive untuk tombol di layar kecil */
+    @media (max-width: 768px) {
+      .judul-ai-button .btn {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+      }
+      
+      .judul-ai-button .btn:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .judul-ai-button select {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      margin-right: 0.25rem;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+    
+    .judul-ai-button select:hover {
+      border-color: #007bff;
+    }
+    
+    .judul-ai-button select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Style untuk modal AI Content Generator */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 10px;
+      width: 400px;
+      max-width: 90%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .fullscreen-editor-modal .modal-content {
+      width: 90%;
+      max-width: 1100px;
+      height: 85vh;
+      margin: 30px auto;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .fullscreen-editor-modal h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .fullscreen-editor-modal .modal-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-top: 12px;
+    }
+
+    .fullscreen-editor-modal .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    #fullscreenEditorTextarea {
+      flex: 1;
+      width: 100%;
+      resize: none;
+      min-height: 0 !important;
+      white-space: pre !important;
+      overflow-x: auto !important;
+      overflow-y: auto !important;
+      font-family: 'Courier New', monospace !important;
+      font-size: 1.1rem !important;
+      padding: 12px !important;
+      box-sizing: border-box !important;
+    }
+    /* === Patch: Keep fullscreen buttons small on mobile === */
+    .btn-full { white-space: nowrap; }
+    @media (max-width: 768px) {
+      .btn-full {
+        width: auto !important;
+        min-width: 36px;
+        max-width: 36px;
+        padding: 0.35rem !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* === Patch: Line numbers gutter inside fullscreen editor === */
+    .fullscreen-editor-modal .textarea-with-line-numbers {
+      display: flex;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .fullscreen-editor-modal .line-numbers {
+      background-color: #f8f9fa;
+      border-right: 1px solid #dee2e6;
+      padding: 12px !important;
+      font-family: 'Courier New', monospace !important;
+      font-size: 1.1rem !important;
+      line-height: 1.5 !important;
+      color: #6c757d;
+      text-align: right;
+      min-width: 44px;
+      user-select: none;
+      white-space: pre;
+      box-sizing: border-box !important;
+      overflow: hidden;
+    }
+    .fullscreen-editor-modal textarea#fullscreenEditorTextarea {
+      border: none !important;
+      outline: none !important;
+      resize: none;
+      flex: 1;
+      margin: 0;
+      height: 60vh;
+      box-shadow: none !important;
+    }
+
+
+    .open-fullscreen-btn {
+      padding: 4px 10px;
+      line-height: 1;
+    }
+
+    /* Custom Notification Styles */
+    .notification-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      max-width: 350px;
+    }
+
+    .notification {
+      background: white;
+      color: #333;
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      border: 1px solid #e0e0e0;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      border-left: 4px solid #28a745;
+    }
+
+    .notification.error {
+      border-left: 4px solid #dc3545;
+    }
+
+    .notification.warning {
+      border-left: 4px solid #ffc107;
+    }
+
+    .notification.info {
+      border-left: 4px solid #17a2b8;
+    }
+
+    .notification::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(0, 0, 0, 0.1);
+      animation: progress 4s linear;
+    }
+
+    @keyframes progress {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    .notification-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notification-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      font-weight: bold;
+    }
+
+    .notification.success .notification-icon {
+      color: #28a745;
+    }
+
+    .notification.error .notification-icon {
+      color: #dc3545;
+    }
+
+    .notification.warning .notification-icon {
+      color: #ffc107;
+    }
+
+    .notification.info .notification-icon {
+      color: #17a2b8;
+    }
+
+    .notification-text {
+      flex: 1;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .notification-close {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+    }
+
+    .notification-close:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Proteksi tambahan - hanya untuk elemen tertentu */
+    button, .btn, img {
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    input, textarea, select {
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      user-select: text !important;
+      -webkit-touch-callout: default !important;
+      -webkit-tap-highlight-color: rgba(0,0,0,0.1) !important;
+      touch-action: manipulation !important;
+    }
+    
+    /* Style untuk preview gambar */
+    .image-preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px dashed #dee2e6;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      min-height: 60px;
+      align-items: center;
+    }
+
+    .image-preview-item {
+      position: relative;
+      display: inline-block;
+    }
+
+    .image-preview {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #dee2e6;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .image-preview:hover {
+      transform: scale(1.05);
+      border-color: #007bff;
+    }
+
+    .image-preview-remove {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .image-preview-remove:hover {
+      background: #c82333;
+    }
+
+    .preview-placeholder {
+      color: #6c757d;
+      font-style: italic;
+      text-align: center;
+      width: 100%;
+      padding: 20px;
+    }
+
+    /* Khusus untuk mobile browser */
+    @media (max-width: 768px) {
+      input, textarea {
+        -webkit-user-select: text !important;
+        user-select: text !important;
+        -webkit-touch-callout: default !important;
+        pointer-events: auto !important;
+      }
+      
+      /* Pastikan konteks menu bisa muncul */
+      * {
+        -webkit-touch-callout: inherit !important;
+        -webkit-user-select: inherit !important;
+        user-select: inherit !important;
+      }
+      
+      input, textarea, select {
+        -webkit-touch-callout: default !important;
+        -webkit-user-select: text !important;
+        user-select: text !important;
+      }
+
+      .image-preview {
+        width: 60px;
+        height: 60px;
+      }
+    }
+    
+    /* Live Preview Gambar */
+    .live-preview {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      margin-left: 15px;
+      display: none;
+      vertical-align: middle;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease;
+    }
+    
+    /* Style untuk textarea dengan nomor baris */
+    .textarea-with-line-numbers {
+      position: relative;
+      display: flex;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      overflow: hidden;
+      background-color: white;
+    }
+    
+    .line-numbers {
+      background-color: #f8f9fa;
+      border-right: 1px solid #dee2e6;
+      padding: 12px !important;
+      font-family: 'Courier New', monospace !important;
+      font-size: 1.1rem !important;
+      line-height: 1.5 !important;
+      color: #6c757d;
+      text-align: right;
+      min-width: 40px;
+      user-select: none;
+      white-space: pre;
+      box-sizing: border-box !important;
+      overflow: hidden;
+      height: 80px;
+    }
+    
+    .textarea-with-line-numbers textarea {
+      border: none;
+      outline: none;
+      resize: vertical;
+      padding: 8px 8px 8px 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      flex: 1;
+      background-color: transparent;
+      box-shadow: none;
+      margin: 0;
+      height: 80px;
+      overflow-y: auto;
+    }
+    
+    .textarea-with-line-numbers textarea:focus {
+      box-shadow: none;
+      border: none;
+    }
+    
+    .live-preview:hover {
+      transform: scale(1.1);
+      border-color: #0056b3;
+      cursor: pointer;
+    }
+    
+    /* Modal Popup untuk Full Preview Gambar */
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+    }
+    
+    .image-modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      max-height: 90%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    .image-modal img {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+    
+    .image-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      color: white;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10001;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .image-modal-close:hover {
+      background: rgba(220, 53, 69, 0.8);
+      transform: scale(1.1);
+    }
+    
+    .image-modal-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .image-modal-info h4 {
+      margin: 0 0 5px 0;
+      font-size: 1.2rem;
+    }
+    
+    .image-modal-info p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    /* Animasi untuk modal */
+    .image-modal.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .image-modal.show .image-modal-content {
+      animation: zoomIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes zoomIn {
+      from { transform: translate(-50%, -50%) scale(0.7); }
+      to { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* CSS Responsif Global untuk Semua Tombol - Diperkecil untuk Mobile */
+    @media (max-width: 768px) {
+      /* Semua tombol diperkecil untuk mobile */
+      .btn {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+        margin-bottom: 0.3rem;
+        border-radius: 4px;
+      }
+      
+      /* Tombol-tombol di area form utama */
+      .form-group .btn {
+        width: 100%;
+        margin-bottom: 0.3rem;
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Container untuk tombol-tombol yang bersebelahan */
+      .btn-group-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      
+      /* Tombol upload dan generate */
+      .btn-success, .btn-warning, .btn-info, .btn-danger {
+        width: 100%;
+        margin-bottom: 0.3rem;
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Tombol di modal */
+      .modal-content .btn {
+        width: 100%;
+        margin-bottom: 0.3rem;
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Tombol kategori dan lokasi */
+      .btn-outline-primary, .btn-outline-danger {
+        width: 100%;
+        margin-bottom: 0.3rem;
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Tombol khusus seperti ubah nama */
+      .btn-ubah-nama {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Tombol primary */
+      .btn-primary {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Tombol secondary */
+      .btn-secondary {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Penyesuaian khusus untuk tombol kecil */
+      .btn-sm {
+        font-size: 0.7rem !important;
+        padding: 0.3rem 0.6rem !important;
+      }
+      
+      /* Tombol AI di area judul */
+      .judul-ai-button .btn {
+        font-size: 0.7rem !important;
+        padding: 0.3rem 0.6rem !important;
+        margin-left: 0;
+        margin-bottom: 0.25rem;
+      }
+    }
+
+    /* Responsive untuk layar sangat kecil */
+    @media (max-width: 480px) {
+      .btn {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.7rem !important;
+        border-radius: 3px;
+      }
+      
+      .btn-sm {
+        font-size: 0.65rem !important;
+        padding: 0.25rem 0.5rem !important;
+      }
+      
+      /* Tombol AI di area judul untuk layar sangat kecil */
+      .judul-ai-button .btn {
+        font-size: 0.65rem !important;
+        padding: 0.25rem 0.5rem !important;
+      }
+    }
+
+    /* Responsive untuk layar tablet */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.9rem;
+      }
+      
+      .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.7rem;
+      }
+    }
+
+    /* CSS tambahan untuk memastikan semua tombol diperkecil di mobile */
+    @media (max-width: 768px) {
+      /* Tombol dengan styling inline atau khusus */
+      button[style*="background"], 
+      .btn[style*="background"] {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Tombol dengan class khusus yang mungkin terlewat */
+      .btn-light, .btn-dark, .btn-link {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Input file dan label custom */
+      .custom-file-label {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      .custom-file-label::after {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Tombol di dalam container khusus */
+      .container .btn, 
+      .form-group .btn, 
+      .row .btn {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+      
+      /* Memastikan tombol dengan w-100 juga diperkecil */
+      .w-100.btn {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+    }
+
+    /* CSS tambahan untuk layar sangat kecil */
+    @media (max-width: 480px) {
+      /* Tombol dengan styling inline atau khusus */
+      button[style*="background"], 
+      .btn[style*="background"] {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.7rem !important;
+      }
+      
+      /* Input file dan label custom */
+      .custom-file-label {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.7rem !important;
+      }
+      
+      .custom-file-label::after {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.7rem !important;
+      }
+    }
+
+    /* CSS untuk Textarea dengan Resize Vertikal dan Horizontal */
+    
+    /* Textarea utama - Judul, Gambar, Lokasi - Override Bootstrap */
+    textarea#judul.form-control, 
+    textarea#gambar1.form-control, 
+    textarea#gambar2.form-control, 
+    textarea#lokasi.form-control {
+      white-space: pre !important; /* Pertahankan teks satu baris setiap entri dan hormati Enter manual */
+      overflow-x: auto !important; /* Scroll horizontal jika teks panjang */
+      overflow-y: auto !important; /* Tampilkan scroll vertikal jika diperlukan */
+      resize: both !important; /* Memungkinkan resize manual vertikal dan horizontal */
+      word-wrap: normal !important; /* Hindari pemotongan kata otomatis untuk menjaga satu baris */
+      word-break: normal !important; /* Hindari pemecahan kata untuk mendukung scroll horizontal */
+      line-height: 1.5 !important; /* Tinggi baris konsisten */
+      padding: 8px 12px !important; /* Padding yang cukup */
+      font-family: 'Courier New', monospace !important; /* Font monospace untuk konsistensi */
+      font-size: 1.1rem !important; /* Ukuran font yang lebih besar untuk keterbacaan */
+      width: 100% !important; /* Panjang default 100% dari container */
+      min-width: 300px !important; /* Panjang minimum 300px */
+      max-width: none !important; /* Hapus batasan maksimum untuk memungkinkan resize horizontal */
+      box-sizing: border-box !important; /* Pastikan padding dihitung dalam width */
+    }
+    
+    /* Khusus untuk textarea judul yang memiliki rows="3" - Override Bootstrap */
+    textarea#judul.form-control {
+      height: auto !important; /* Biarkan tinggi menyesuaikan konten */
+      min-height: 80px !important; /* Tinggi minimum */
+      width: 100% !important; /* Panjang default penuh untuk judul */
+      min-width: 400px !important; /* Panjang minimum lebih besar untuk judul */
+      max-width: none !important; /* Hapus batasan maksimum */
+      resize: both !important; /* Pastikan resize berfungsi */
+    }
+    
+    /* Textarea gambar - Override Bootstrap */
+    textarea#gambar1.form-control, 
+    textarea#gambar2.form-control {
+      height: auto !important; /* Biarkan tinggi menyesuaikan konten */
+      min-height: 80px !important; /* Tinggi minimum */
+      width: 100% !important; /* Panjang default penuh untuk gambar */
+      min-width: 350px !important; /* Panjang minimum untuk URL gambar */
+      max-width: none !important; /* Hapus batasan maksimum */
+      resize: both !important; /* Pastikan resize berfungsi */
+    }
+    
+    /* Textarea lokasi - Override Bootstrap */
+    textarea#lokasi.form-control {
+      height: auto !important; /* Biarkan tinggi menyesuaikan konten */
+      min-height: 80px !important; /* Tinggi minimum */
+      width: 100% !important; /* Panjang default penuh untuk lokasi */
+      min-width: 250px !important; /* Panjang minimum untuk lokasi */
+      max-width: none !important; /* Hapus batasan maksimum */
+      resize: both !important; /* Pastikan resize berfungsi */
+    }
+    
+    /* Scrollbar styling untuk textarea horizontal dan vertikal - Override Bootstrap */
+    textarea#judul.form-control::-webkit-scrollbar, 
+    textarea#gambar1.form-control::-webkit-scrollbar, 
+    textarea#gambar2.form-control::-webkit-scrollbar, 
+    textarea#lokasi.form-control::-webkit-scrollbar {
+      width: 8px !important; /* Lebar scrollbar vertikal */
+      height: 8px !important; /* Tinggi scrollbar horizontal */
+      background-color: #f1f1f1 !important;
+      border-radius: 4px !important;
+    }
+    
+    textarea#judul.form-control::-webkit-scrollbar-thumb, 
+    textarea#gambar1.form-control::-webkit-scrollbar-thumb, 
+    textarea#gambar2.form-control::-webkit-scrollbar-thumb, 
+    textarea#lokasi.form-control::-webkit-scrollbar-thumb {
+      background-color: #c1c1c1 !important;
+      border-radius: 4px !important;
+      border: 1px solid #f1f1f1 !important;
+    }
+    
+    textarea#judul.form-control::-webkit-scrollbar-thumb:hover, 
+    textarea#gambar1.form-control::-webkit-scrollbar-thumb:hover, 
+    textarea#gambar2.form-control::-webkit-scrollbar-thumb:hover, 
+    textarea#lokasi.form-control::-webkit-scrollbar-thumb:hover {
+      background-color: #a8a8a8 !important;
+    }
+    
+    /* Scrollbar corner untuk textarea utama - Override Bootstrap */
+    textarea#judul.form-control::-webkit-scrollbar-corner,
+    textarea#gambar1.form-control::-webkit-scrollbar-corner,
+    textarea#gambar2.form-control::-webkit-scrollbar-corner,
+    textarea#lokasi.form-control::-webkit-scrollbar-corner {
+      background-color: #f1f1f1 !important;
+    }
+    
+    /* Placeholder tetap terlihat dengan baik - Override Bootstrap */
+    textarea#judul.form-control::placeholder, 
+    textarea#gambar1.form-control::placeholder, 
+    textarea#gambar2.form-control::placeholder, 
+    textarea#lokasi.form-control::placeholder {
+      color: #6c757d !important;
+      font-style: italic !important;
+      white-space: nowrap !important;
+    }
+    
+    /* Memastikan container textarea tidak overflow */
+    .form-group {
+      overflow: visible !important;
+    }
+    
+    /* Responsive untuk mobile - memungkinkan resize - Override Bootstrap */
+    @media (max-width: 768px) {
+      textarea#judul.form-control, 
+      textarea#gambar1.form-control, 
+      textarea#gambar2.form-control, 
+      textarea#lokasi.form-control {
+        font-size: 1rem !important;
+        padding: 6px 10px !important;
+        white-space: pre !important; /* Pertahankan teks horizontal di mobile */
+        overflow-x: auto !important;
+        overflow-y: auto !important; /* Scroll vertikal di mobile */
+        width: 100% !important; /* Panjang penuh di mobile */
+        max-width: none !important; /* Hapus batasan maksimum di mobile */
+        resize: both !important; /* Pastikan resize berfungsi di mobile */
+      }
+      
+      /* Panjang minimum yang lebih kecil untuk mobile - Override Bootstrap */
+      textarea#judul.form-control {
+        min-width: 280px !important; /* Panjang minimum lebih kecil untuk judul di mobile */
+      }
+      
+      textarea#gambar1.form-control, 
+      textarea#gambar2.form-control {
+        min-width: 250px !important; /* Panjang minimum lebih kecil untuk gambar di mobile */
+      }
+      
+      textarea#lokasi.form-control {
+        min-width: 200px !important; /* Panjang minimum lebih kecil untuk lokasi di mobile */
+      }
+    }
+      
+      /* Scrollbar lebih kecil di mobile - Override Bootstrap */
+      textarea#judul.form-control::-webkit-scrollbar, 
+      textarea#gambar1.form-control::-webkit-scrollbar, 
+      textarea#gambar2.form-control::-webkit-scrollbar, 
+      textarea#lokasi.form-control::-webkit-scrollbar {
+        width: 6px !important; /* Lebar scrollbar vertikal di mobile */
+        height: 6px !important; /* Tinggi scrollbar horizontal di mobile */
+      }
+      
+      /* Line numbers responsive untuk mobile */
+      .line-numbers {
+        font-size: 1.1rem !important;
+        padding: 12px !important;
+      }
+      
+      .textarea-with-line-numbers textarea {
+        font-size: 1rem !important;
+        padding: 6px 6px 6px 6px !important;
+      }
+
+    /* CSS untuk Scroll Bar Vertikal dan Horizontal di Semua Kolom */
+    
+    /* Scroll bar untuk semua textarea dan input */
+    textarea, input[type="text"], input[type="number"], select {
+      overflow: auto !important; /* Menampilkan scroll bar saat diperlukan */
+      scrollbar-width: thin !important; /* Firefox */
+      scrollbar-color: #c1c1c1 #f1f1f1 !important; /* Firefox */
+    }
+    
+    /* Webkit scrollbar styling untuk semua textarea dan input */
+    textarea::-webkit-scrollbar, 
+    input[type="text"]::-webkit-scrollbar, 
+    input[type="number"]::-webkit-scrollbar,
+    select::-webkit-scrollbar {
+      width: 8px !important; /* Lebar scrollbar vertikal */
+      height: 8px !important; /* Tinggi scrollbar horizontal */
+      background-color: #f1f1f1 !important;
+      border-radius: 4px !important;
+    }
+    
+    textarea::-webkit-scrollbar-thumb, 
+    input[type="text"]::-webkit-scrollbar-thumb, 
+    input[type="number"]::-webkit-scrollbar-thumb,
+    select::-webkit-scrollbar-thumb {
+      background-color: #c1c1c1 !important;
+      border-radius: 4px !important;
+      border: 1px solid #f1f1f1 !important;
+    }
+    
+    textarea::-webkit-scrollbar-thumb:hover, 
+    input[type="text"]::-webkit-scrollbar-thumb:hover, 
+    input[type="number"]::-webkit-scrollbar-thumb:hover,
+    select::-webkit-scrollbar-thumb:hover {
+      background-color: #a8a8a8 !important;
+    }
+    
+    textarea::-webkit-scrollbar-corner,
+    input[type="text"]::-webkit-scrollbar-corner,
+    input[type="number"]::-webkit-scrollbar-corner,
+    select::-webkit-scrollbar-corner {
+      background-color: #f1f1f1 !important;
+    }
+    
+    /* Styling khusus untuk textarea dengan konten yang bisa scroll vertikal */
+    #harga, #kategoriTerpilih, #deskripsi, #hashtag {
+      overflow-y: auto !important; /* Scroll vertikal */
+      overflow-x: auto !important; /* Scroll horizontal */
+      white-space: pre-wrap !important; /* Mempertahankan format teks */
+      word-wrap: break-word !important; /* Memotong kata panjang */
+      resize: both !important; /* Memungkinkan resize vertikal dan horizontal */
+    }
+    
+    /* Styling untuk input text dan number */
+    input[type="text"], input[type="number"] {
+      overflow-x: auto !important; /* Scroll horizontal untuk input panjang */
+      white-space: nowrap !important; /* Mencegah wrap untuk input */
+    }
+    
+    /* Styling untuk select dropdown */
+    select {
+      overflow-y: auto !important; /* Scroll vertikal untuk dropdown panjang */
+    }
+    
+    /* Responsive scrollbar untuk mobile */
+    @media (max-width: 768px) {
+      textarea::-webkit-scrollbar, 
+      input[type="text"]::-webkit-scrollbar, 
+      input[type="number"]::-webkit-scrollbar,
+      select::-webkit-scrollbar {
+        width: 6px !important;
+        height: 6px !important;
+      }
+      
+      /* Scrollbar lebih tipis di mobile */
+      textarea, input[type="text"], input[type="number"], select {
+        scrollbar-width: thin !important;
+      }
+    }
+    
+    /* Styling khusus untuk textarea dengan line numbers */
+    .textarea-with-line-numbers textarea {
+      overflow-y: auto !important;
+      overflow-x: auto !important;
+    }
+    
+    /* Memastikan semua form control memiliki scroll bar */
+    .form-control {
+      overflow: auto !important;
+    }
+    
+    .form-control::-webkit-scrollbar {
+      width: 8px !important;
+      height: 8px !important;
+      background-color: #f1f1f1 !important;
+      border-radius: 4px !important;
+    }
+    
+    .form-control::-webkit-scrollbar-thumb {
+      background-color: #c1c1c1 !important;
+      border-radius: 4px !important;
+      border: 1px solid #f1f1f1 !important;
+    }
+    
+    .form-control::-webkit-scrollbar-thumb:hover {
+      background-color: #a8a8a8 !important;
+    }
+    
+    .form-control::-webkit-scrollbar-corner {
+      background-color: #f1f1f1 !important;
+    }
+    
+
+  
+    /* === Patch 2: Stronger rules to keep 'Full' buttons small on mobile === */
+    .open-fullscreen-btn { display: inline-flex; align-items: center; justify-content: center; }
+    @media (max-width: 768px) {
+      .form-group .open-fullscreen-btn,
+      .open-fullscreen-btn.btn-full {
+        width: auto !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        height: 32px !important;
+        padding: 0 !important;
+        border-radius: 6px !important;
+      }
+    }
+    .open-fullscreen-btn i { pointer-events: none; }
+
+    /* === Patch 2: Make fullscreen editor layout consistent on mobile === */
+    @media (max-width: 768px) {
+      .fullscreen-editor-modal .modal-content {
+        width: 95% !important;
+        max-width: 95% !important;
+        height: 80vh !important;
+        margin: 20px auto !important;
+        padding: 16px !important;
+      }
+      .fullscreen-editor-modal .line-numbers {
+        font-size: 1.1rem !important;
+        min-width: 40px !important;
+      }
+      .fullscreen-editor-modal textarea#fullscreenEditorTextarea {
+        height: calc(80vh - 140px) !important;
+      }
+    }
+
+  </style>
+
+<!-- ===== FIX: Fullscreen Editor Line Numbers (safe override) ===== -->
+<style>
+  /* Force left gutter + content layout inside the fullscreen modal */
+  #fullscreenEditorModal .modal-body.textarea-with-line-numbers{
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+  }
+  /* Stable gutter at the left */
+  #fullscreenEditorModal #fullscreenEditorLineNumbers{
+    position: relative !important;
+    text-align: right !important;
+    min-width: 48px !important;
+    white-space: pre !important;
+    overflow: hidden !important;
+    height: auto !important;
+    padding: 12px 10px 12px 12px !important;
+    border-right: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
+    font-family: "Courier New", monospace !important;
+    line-height: 1.5 !important;
+    user-select: none !important;
+  }
+  /* Textarea fills the rest */
+  #fullscreenEditorModal textarea#fullscreenEditorTextarea{
+    border: 0 !important;
+    outline: none !important;
+    resize: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    font-family: "Courier New", monospace !important;
+    line-height: 1.5 !important;
+    padding: 12px !important;
+    overflow: auto !important;
+  }
+
+  @media (max-width: 768px){
+    #fullscreenEditorModal .modal-content{ height: 80vh !important; }
+    #fullscreenEditorModal textarea#fullscreenEditorTextarea{ height: calc(80vh - 140px) !important; }
+    #fullscreenEditorModal #fullscreenEditorLineNumbers{ min-width: 44px !important; }
+  }
+</style>
+<script>
+  // Ensure scroll and line numbers stay in sync when the modal opens
+  (function(){
+    const ta = document.getElementById('fullscreenEditorTextarea');
+    const gutter = document.getElementById('fullscreenEditorLineNumbers');
+    if(!ta || !gutter) return;
+    function syncFullscreenScroll(){ gutter.scrollTop = ta.scrollTop; }
+    function updateFullscreenLineNumbers(){
+      const lines = (ta.value.split('\n').length) || 1;
+      let nums = '';
+      for(let i=1;i<=lines;i++) nums += i + '\n';
+      gutter.textContent = nums.trimEnd();
+      const digitCount = String(lines).length;
+      if (gutter && digitCount) {
+        const minW = Math.max(44, digitCount * 12 + 20);
+        gutter.style.minWidth = minW + 'px';
+      }
+    }
+    // Attach once
+    ta.removeEventListener('scroll', syncFullscreenScroll, false);
+    ta.addEventListener('scroll', syncFullscreenScroll, false);
+    ta.removeEventListener('input', updateFullscreenLineNumbers, false);
+    ta.addEventListener('input', updateFullscreenLineNumbers, false);
+    // Initialize
+    requestAnimationFrame(function(){
+      
+      syncFullscreenScroll();
+    });
+  })();
+</script>
+<!-- ===== END FIX ===== -->
+
+<style id="hide-outer-gutters">
+  /* Hide line-number gutters outside the fullscreen modal */
+  .textarea-with-line-numbers .line-numbers { display: none !important; }
+  /* Re-enable gutters inside the fullscreen modal */
+  #fullscreenEditorModal .line-numbers { display: block !important; }
+</style>
+</head>
+
+<body onload="initializePage()">
+  <!-- Notification Container -->
+  <div id="notificationContainer" class="notification-container"></div>
+  
+  <!-- Modal Popup untuk Full Preview Gambar -->
+  <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <div class="image-modal-content" onclick="event.stopPropagation()">
+      <span class="image-modal-close" onclick="closeImageModal()">×</span>
+      <img id="modalImage" src="" alt="Full Preview">
+      <div class="image-modal-info">
+        <h4 id="modalTitle">Preview Gambar</h4>
+        <p id="modalDescription">Klik di luar gambar atau tombol X untuk menutup</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" style="max-width: 900px;">
+
+
+
+    <div class="form-group">
+      <label for="dataSlot">Pilih Slot Penyimpanan</label>
+      <select id="dataSlot" class="form-control" onchange="changeSlot()">
+        <!-- Opsi slot akan diisi oleh JavaScript -->
+      </select>
+      <div class="mt-2">
+        <div class="row g-2 mb-2">
+          <div class="col-6">
+            <button class="btn btn-ubah-nama w-100" onclick="renameSlot()"><i class="fas fa-edit"></i> Ubah Nama</button>
+          </div>
+          <div class="col-6">
+            <button class="btn btn-primary w-100" onclick="addSlot()"><i class="fas fa-plus"></i> Tambah Slot</button>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-12">
+            <button class="btn btn-primary shadow w-100" onclick="openAIContentGenerator()" style="background: linear-gradient(45deg, #dc3545, #c82333); border: none; border-radius: 8px; padding: 8px 15px; font-weight: 500; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(220,53,69,0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
+              <i class="fas fa-wand-magic-sparkles" style="margin-right: 5px;"></i> Generate Konten AI
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+        <label for="judul" class="mb-0">Judul</label>
+        <button type="button" class="btn btn-outline-secondary btn-sm open-fullscreen-btn" btn-full onclick="openFullscreenEditor('judul')" aria-label="Edit Judul layar penuh"><i class="fas fa-expand"></i></button>
+      </div>
+      <textarea id="judul" class="form-control" placeholder="Tulis Judul" oninput="updateLineCount('judul')" rows="3"></textarea>
+      <div class="judul-ai-container">
+        <div id="judul-line-count" class="line-count">Baris: 0</div>
+        <div class="judul-ai-button">
+          <div class="mb-2">
+            <select id="unicodeStyleSelect" class="form-control" style="font-size: 0.8rem;">
+              <option value="mixed">Campur Semua</option>
+              <option value="bold">Bold (𝐛𝐨𝐥𝐝)</option>
+              <option value="bold-sans">Bold Sans (𝗯𝗼𝗹𝗱)</option>
+              <option value="italic">Italic (𝘪𝘵𝘢𝘭𝘪𝘤)</option>
+              <option value="bold-italic">Bold Italic (𝙞𝙩𝙖𝙡𝙞𝙘)</option>
+              <option value="monospace">Monospace (𝚖𝚘𝚗𝚘)</option>
+              <option value="fullwidth">Fullwidth (ｆｕｌｌ)</option>
+              <option value="small-caps">Small Caps (sᴍᴀʟʟ)</option>
+              <option value="leet-style">Leet Style (J4_54)</option>
+            </select>
+          </div>
+          <div class="row g-2">
+            <div class="col-6">
+              <button type="button" class="btn btn-warning w-100" onclick="convertToUnicode()">Unicode</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="btn btn-secondary w-100" onclick="revertToNormalFont()">Reset Font</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="harga">Harga</label>
+      <textarea id="harga" class="form-control" placeholder="Contoh: 123000 (tanpa titik atau spasi)"></textarea>
+      <div id="harga-error" class="text-danger" style="display:none;">Hanya angka yang diperbolehkan.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="kategori">Kategori</label>
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <select id="kategori" class="form-control" onchange="updateKategoriTextarea()" style="max-width: 300px;">
+          <option value="Mebel">Mebel</option>
+          <option value="Peralatan rumah tangga">Peralatan rumah tangga</option>
+          <option value="Perkakas">Perkakas</option>
+          <option value="Peralatan">Peralatan</option>
+          <option value="Kebun">Kebun</option>
+          <option value="Elektronik & komputer">Elektronik & komputer</option>
+          <option value="Telepon seluler">Telepon seluler</option>
+          <option value="Cuci Gudang">Cuci Gudang</option>
+          <option value="Lain-lain">Lain-lain</option>
+          <option value="Olahraga & Outdoor">Olahraga & Outdoor</option>
+          <option value="Barang Antik & Koleksi">Barang Antik & Koleksi</option>
+          <option value="Alat Musik">Alat Musik</option>
+          <option value="Seni & Kerajinan">Seni & Kerajinan</option>
+          <option value="Komponen otomotif">Komponen otomotif</option>
+          <option value="Sepeda">Sepeda</option>
+          <option value="Pakaian & Sepatu Wanita">Pakaian & Sepatu Wanita</option>
+          <option value="Pakaian & Sepatu Pria">Pakaian & Sepatu Pria</option>
+          <option value="Perhiasan & Aksesoris">Perhiasan & Aksesoris</option>
+          <option value="Tas & Koper">Tas & Koper</option>
+          <option value="Bayi & Anak-Anak">Bayi & Anak-Anak</option>
+          <option value="Kesehatan & Kecantikan">Kesehatan & Kecantikan</option>
+          <option value="Mainan & Game">Mainan & Game</option>
+          <option value="Kebutuhan Hewan Peliharaan">Kebutuhan Hewan Peliharaan</option>
+          <option value="Video Game">Video Game</option>
+          <option value="Buku, Film, & Musik">Buku, Film, & Musik</option>
+        </select>
+      </div>
+      <textarea id="kategoriTerpilih" class="form-control" placeholder="Kategori yang dipilih akan muncul di sini"></textarea>
+      <div class="mt-2 d-flex">
+        <button type="button" class="btn btn-danger btn-sm" onclick="clearKategoriTerpilih()">
+          <i class="fas fa-trash"></i> Hapus Kategori Terpilih
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="kondisi">Kondisi Barang</label>
+      <select id="kondisi" class="form-control">
+        <option value="Baru">Baru</option>
+        <option value="Bekas">Bekas</option>
+      </select>
+    </div>
+
+    <div class="form-group"><div class="d-flex align-items-center justify-content-between gap-2 mb-1"><label for="deskripsi" class="mb-0">Deskripsi/Keterangan</label><button type="button" class="btn btn-outline-secondary btn-sm open-fullscreen-btn" btn-full onclick="openFullscreenEditor('deskripsi')" aria-label="Edit Deskripsi/Keterangan layar penuh"><i class="fas fa-expand"></i></button></div><textarea id="deskripsi" class="form-control" placeholder="Tulis Deskripsi Produk"></textarea></div>
+
+    <div class="form-group">
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+        <label for="gambar1" class="mb-0">Gambar Utama</label>
+        <div class="d-flex gap-1">
+          <button type="button" class="btn btn-outline-info btn-sm" onclick="openManualLinkModal()" aria-label="Buat Link Manual" title="Buat Link Manual"><i class="fas fa-link"></i></button>
+          <button type="button" class="btn btn-outline-secondary btn-sm open-fullscreen-btn" btn-full onclick="openFullscreenEditor('gambar1')" aria-label="Edit Gambar Utama layar penuh"><i class="fas fa-expand"></i></button>
+        </div>
+      </div>
+      <textarea id="gambar1" class="form-control" placeholder="Link Gambar 1"
+        oninput="updateLineCount('gambar1'); updateImagePreview(1);" rows="3"></textarea>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+          <div id="gambar1-line-count" class="line-count">Baris: 0</div>
+          <div class="d-flex align-items-center gap-2">
+            <input type="checkbox" id="gambar1Sequential" onchange="toggleSequentialText('gambar1Sequential', 'gambar1SequentialLabel')" style="margin: 0;">
+            <label for="gambar1Sequential" id="gambar1SequentialLabel" style="font-size: 0.8rem; color: #6c757d; font-weight: normal; margin: 0; line-height: 1; white-space: nowrap;">Posting Random</label>
+          </div>
+        </div>
+        <div></div>
+      </div>
+      <div class="mt-2">
+        <input type="file" id="gambar1Upload" multiple accept="image/*" style="display: none;">
+        <div class="mb-2">
+          <div class="row g-2 mb-2 align-items-center">
+            <div class="col-6">
+              <button type="button" class="btn btn-success w-100" onclick="document.getElementById('gambar1Upload').click()">Upload</button>
+            </div>
+            <div class="col-6">
+              <input type="number" id="gambar1Duplicate" class="form-control" placeholder="Duplikat" value="1" min="1" max="50">
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col-3">
+              <button type="button" id="generateBtn1" class="btn btn-warning w-100" onclick="processUpload(1)">Generate</button>
+            </div>
+            <div class="col-6">
+              <button type="button" id="generateBtn1NoFrame" class="btn btn-info w-100" onclick="processUploadWithoutFrame(1)">No Frame</button>
+            </div>
+            <div class="col-3">
+              <button type="button" id="stopBtn1" class="btn btn-danger w-100" onclick="stopUpload(1)" style="display: none;">Stop</button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <img id="gambar1LivePreview" src="" alt="Preview" class="live-preview">
+          <span id="gambar1Count" class="text-muted" style="font-size: 12px;"></span>
+        </div>
+      </div>
+      <div id="gambar1Preview" class="image-preview-container" style="display: none;">
+        <div class="preview-placeholder">Preview gambar akan muncul di sini</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+        <label for="gambar2" class="mb-0">Gambar Pendukung</label>
+        <button type="button" class="btn btn-outline-secondary btn-sm open-fullscreen-btn" btn-full onclick="openFullscreenEditor('gambar2')" aria-label="Edit Gambar Pendukung layar penuh"><i class="fas fa-expand"></i></button>
+      </div>
+      <textarea id="gambar2" class="form-control" placeholder="Link Pendukung"
+        oninput="updateLineCount('gambar2'); updateImagePreview(2);" rows="3"></textarea>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+          <div id="gambar2-line-count" class="line-count">Baris: 0</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="mt-2">
+        <input type="file" id="gambar2Upload" multiple accept="image/*" style="display: none;">
+        <div class="mb-2">
+          <div class="row g-2">
+            <div class="col-4">
+              <button type="button" class="btn btn-success btn-sm w-100" onclick="document.getElementById('gambar2Upload').click()">Upload</button>
+            </div>
+            <div class="col-4">
+              <button type="button" id="generateBtn2" class="btn btn-warning btn-sm w-100" onclick="processUpload(2)">Generate</button>
+            </div>
+            <div class="col-4">
+              <button type="button" id="stopBtn2" class="btn btn-danger btn-sm w-100" onclick="stopUpload(2)" style="display: none;">Stop</button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <img id="gambar2LivePreview" src="" alt="Preview" class="live-preview">
+          <span id="gambar2Count" class="text-muted" style="font-size: 12px;"></span>
+        </div>
+      </div>
+      <div id="gambar2Preview" class="image-preview-container" style="display: none;">
+        <div class="preview-placeholder">Preview gambar akan muncul di sini</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+        <label for="lokasi" class="mb-0">Lokasi</label>
+        <button type="button" class="btn btn-outline-secondary btn-sm open-fullscreen-btn" btn-full onclick="openFullscreenEditor('lokasi')" aria-label="Edit Lokasi layar penuh"><i class="fas fa-expand"></i></button>
+      </div>
+      <textarea id="lokasi" class="form-control" placeholder="Tulis Lokasi"
+        oninput="updateLineCount('lokasi')" rows="3"></textarea>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+          <div id="lokasi-line-count" class="line-count">Baris: 0</div>
+          <div class="d-flex align-items-center gap-2">
+            <input type="checkbox" id="lokasiSequential" onchange="toggleSequentialText('lokasiSequential', 'lokasiSequentialLabel')" style="margin: 0;">
+            <label for="lokasiSequential" id="lokasiSequentialLabel" style="font-size: 0.8rem; color: #6c757d; font-weight: normal; margin: 0; line-height: 1; white-space: nowrap;">Posting Random</label>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-6">
+            <button type="button" class="btn btn-danger btn-sm w-100" onclick="clearLokasiData()">
+              <i class="fas fa-trash"></i> Hapus
+            </button>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-info btn-sm w-100" onclick="openLokasiModal()">
+              <i class="fas fa-map-marker-alt"></i> Lokasi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="hashtag">Hashtag</label>
+      <textarea id="hashtag" class="form-control" placeholder="Tulis Hashtag"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="delay">Delay (detik)</label>
+      <input type="text" id="delay" class="form-control" placeholder="Contoh: 30 (detik)" value="25">
+      <div id="delay-error" class="text-danger" style="display:none;">Hanya angka yang diperbolehkan.</div>
+    </div>
+
+
+    <div class="mb-3">
+      <div class="row g-2">
+        <div class="col-6">
+          <button class="btn btn-primary w-100" onclick="saveData()">Simpan</button>
+        </div>
+        <div class="col-6">
+          <button class="btn btn-danger w-100" onclick="clearData()">Hapus</button>
+        </div>
+      </div>
+      <div class="row g-2 mt-1">
+        <div class="col-6">
+          <button class="btn btn-info w-100" onclick="exportData()">Ekspor</button>
+        </div>
+        <div class="col-6">
+          <button class="btn btn-secondary w-100" onclick="document.getElementById('importFile').click()">Impor</button>
+        </div>
+      </div>
+    </div>
+
+    <input type="file" id="importFile" class="form-control-file" onchange="importData(event)">
+
+    
+<!-- Modal Fullscreen Editor -->
+  <div id="fullscreenEditorModal" class="modal fullscreen-editor-modal" onclick="closeFullscreenEditor(false)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <span class="close" onclick="closeFullscreenEditor(false)">x</span>
+      <h3 id="fullscreenEditorTitle">Edit Konten</h3>
+      <div class="modal-body textarea-with-line-numbers" id="fullscreenEditorWrapper">
+        <div id="fullscreenEditorLineNumbers" class="line-numbers">1</div>
+        <textarea id="fullscreenEditorTextarea" class="form-control" oninput="updateFullscreenLineNumbers()" onscroll="syncFullscreenScroll()" wrap="off"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeFullscreenEditor(false)">Batal</button>
+        <button type="button" class="btn btn-primary" onclick="closeFullscreenEditor(true)">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal AI Content Generator -->
+
+    <div id="aiContentModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAIContentModal()">×</span>
+        <h4>Generate Konten AI</h4>
+        <div class="form-group">
+          <label for="productName">Nama Produk:</label>
+          <input type="text" id="productName" class="form-control" placeholder="Masukkan nama produk">
+        </div>
+        <div class="form-group">
+           <label for="judulLineCount">Jumlah Baris Judul:</label>
+           <small class="text-muted">Jumlah baris adalah jumlah postingan</small>
+                    <input type="number" id="judulLineCount" class="form-control" placeholder="Contoh: 5" min="1" value="5">
+                  </div>
+                  <div class="form-group">
+                    <label for="phoneNumber">Nomor HP/WhatsApp:</label>
+                    <input type="text" id="phoneNumber" class="form-control" placeholder="Contoh: 081-225-555-555" oninput="formatPhoneNumber(this)">
+                  </div>
+                  <div class="form-group">
+                    <div class="form-check">
+                      <input type="checkbox" id="addPhoneToTitle" class="form-check-input" checked>
+                      <label for="addPhoneToTitle" class="form-check-label">Tambahkan nomor HP di akhir judul</label>
+                    </div>
+                  </div>
+        <div class="loading" id="aiLoading">
+          <div class="spinner"></div>
+          <p>Sedang menggenerate konten...</p>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+          <button class="btn btn-primary" onclick="generateAIContent()">Generate</button>
+          <button class="btn btn-secondary" onclick="closeAIContentModal()">Batal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Lokasi -->
+    <div id="lokasiModal" class="modal">
+      <div class="modal-content" style="width: 500px; max-width: 95%;">
+      
+        <span class="close" onclick="closeLokasiModal()">×</span>
+        <h4>Pilih Lokasi</h4>
+        <div class="form-group">
+          <label for="lokasiSearch">Cari Lokasi:</label>
+          <input type="text" id="lokasiSearch" class="form-control" placeholder="Ketik nama daerah (contoh: Sulawesi Selatan)" oninput="searchLokasi()">
+        </div>
+
+        <div id="lokasiControls" style="margin-top: 10px; display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="text-muted" id="lokasiCount">0 lokasi ditemukan</small>
+            <button type="button" class="btn btn-outline-primary btn-sm" onclick="selectAllLokasi()" id="selectAllBtn">
+              <i class="fas fa-check-square"></i> Pilih Semua
+            </button>
+          </div>
+        </div>
+        <div id="lokasiResults" style="max-height: 300px; overflow-y: auto; border: 1px solid #e9ecef; border-radius: 8px; margin-top: 5px; display: none; background-color: #f8f9fa;">
+          <!-- Hasil pencarian akan ditampilkan di sini -->
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-center gap-2 mt-3">
+          <button class="btn btn-primary" onclick="applySelectedLokasi()">Terapkan Pilihan</button>
+          <button class="btn btn-secondary" onclick="closeLokasiModal()">Tutup</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Manual Link -->
+    <div id="manualLinkModal" class="modal">
+      <div class="modal-content" style="width: 90%; max-width: 1200px; height: 90%; max-height: 800px; padding: 0; overflow: hidden;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+           <h3 style="margin: 0; color: #333; font-size: 18px;">🔗 Generate Link Manual</h3>
+           <span class="close" onclick="closeManualLinkModal()" style="font-size: 24px; cursor: pointer; color: #666;">×</span>
+         </div>
+        <div style="height: calc(100% - 70px); overflow: hidden;">
+          <iframe 
+            src="https://www.azkazamdigital.com/upload-gambar/" 
+            style="width: 100%; height: 100%; border: none; display: block;"
+            frameborder="0"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    // === Patch: Line numbers for fullscreen editor ===
+    function updateFullscreenLineNumbers() {
+      const ta = document.getElementById('fullscreenEditorTextarea');
+      const gutter = document.getElementById('fullscreenEditorLineNumbers');
+      if (!ta || !gutter) return;
+      const lines = ta.value.split('\n').length || 1;
+      let nums = '';
+      for (let i = 1; i <= lines; i++) nums += i + '\n';
+      gutter.textContent = nums.trimEnd();
+      const digitCount = String(lines).length;
+      if (gutter && digitCount) {
+        const minW = Math.max(44, digitCount * 12 + 20);
+        gutter.style.minWidth = minW + 'px';
+      }
+    }
+    function syncFullscreenScroll() {
+      const ta = document.getElementById('fullscreenEditorTextarea');
+      const gutter = document.getElementById('fullscreenEditorLineNumbers');
+      if (gutter) gutter.scrollTop = ta.scrollTop;
+    }
+
+  </script>
+  <script>
+    // Pengamanan untuk mencegah view source dan developer tools
+    document.addEventListener('keydown', function(e) {
+      // Allow copy/paste/select in form elements
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return true;
+      }
+      
+      // Disable F12 (Developer Tools)
+      if (e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+Shift+I (Developer Tools)
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+Shift+J (Console)
+      if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+U (View Source)
+      if (e.ctrlKey && e.keyCode === 85) {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+S (Save Page)
+      if (e.ctrlKey && e.keyCode === 83) {
+        e.preventDefault();
+        return false;
+      }
+      // Disable Ctrl+P (Print)
+      if (e.ctrlKey && e.keyCode === 80) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Allow right-click context menu on form elements
+    document.addEventListener('contextmenu', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return true;
+      }
+      e.preventDefault();
+      return false;
+    });
+
+    // Allow text selection on form elements
+    document.addEventListener('selectstart', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return true;
+      }
+      e.preventDefault();
+      return false;
+    });
+
+    // Disable drag and drop (kecuali di input/textarea)
+    document.addEventListener('dragstart', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return true;
+      }
+      e.preventDefault();
+      return false;
+    });
+
+    // Console warning
+     console.clear();
+     console.log('%cSTOP!', 'color: red; font-size: 50px; font-weight: bold;');
+     console.log('%cIni adalah fitur browser yang ditujukan untuk developer. Jika seseorang menyuruh Anda untuk menyalin-tempel sesuatu di sini untuk mengaktifkan fitur atau "meretas" akun seseorang, itu adalah penipuan dan akan memberi mereka akses ke akun Anda.', 'color: red; font-size: 16px;');
+     
+     /*
+     // Detect developer tools - Dinonaktifkan karena dapat menyebabkan masalah bagi pengguna
+     let devtools = {
+       open: false,
+       orientation: null
+     };
+     
+     const threshold = 160;
+     
+     setInterval(function() {
+       if (window.outerHeight - window.innerHeight > threshold || 
+           window.outerWidth - window.innerWidth > threshold) {
+         if (!devtools.open) {
+           devtools.open = true;
+           document.body.style.filter = 'blur(10px)';
+           alert('Developer tools terdeteksi! Akses tidak diizinkan.');
+           window.location.href = 'about:blank';
+         }
+       } else {
+         devtools.open = false;
+         document.body.style.filter = 'none';
+       }
+     }, 500);
+     */
+
+     // Tambahan proteksi untuk mencegah inspect element
+     document.addEventListener('keydown', function(e) {
+       if (e.key === 'F12' || 
+           (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+           (e.ctrlKey && e.key === 'U')) {
+         e.preventDefault();
+         alert('Aksi tidak diizinkan!');
+         return false;
+       }
+     });
+
+     // Proteksi tambahan untuk mobile (hanya multi-touch) - izinkan long-press di input/textarea
+      document.addEventListener('touchstart', function(e) {
+        if ((e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+          return true;
+        }
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      });
+
+
+
+    // Konstanta
+    const LAST_SELECTED_SLOT_KEY = 'lastSelectedSlot';
+    const SLOT_NAME_PREFIX = 'name_';
+    const MAX_SLOTS = 1000; // Batas maksimum slot yang bisa dibuat
+    const INITIAL_SLOTS = 10; // Jumlah slot awal yang ditampilkan
+    const ADDED_SLOTS_KEY = 'addedSlots'; // Kunci untuk menyimpan slot yang ditambahkan
+
+    // Fungsi untuk toggle teks sequential
+    function toggleSequentialText(checkboxId, labelId) {
+      const checkbox = document.getElementById(checkboxId);
+      const label = document.getElementById(labelId);
+      
+      if (checkbox.checked) {
+        label.textContent = 'Akan di Posting Random';
+      } else {
+        label.textContent = 'Posting Random';
+      }
+      
+      // Auto-save checkbox status
+      autoSaveCheckbox(checkboxId);
+    }
+    
+    // Fungsi untuk auto-save status checkbox
+    function autoSaveCheckbox(checkboxId) {
+      const checkbox = document.getElementById(checkboxId);
+      if (checkbox) {
+        const slot = document.getElementById('dataSlot').value;
+        const data = JSON.parse(localStorage.getItem(slot) || '{}');
+        data[checkboxId] = checkbox.checked;
+        localStorage.setItem(slot, JSON.stringify(data));
+      }
+    }
+    
+    // Fungsi untuk setup auto-save semua checkbox
+    function setupCheckboxAutoSave() {
+      // Checkbox yang menggunakan sistem slot data
+      const slotCheckboxes = ['gambar1Sequential', 'lokasiSequential'];
+      
+      slotCheckboxes.forEach(checkboxId => {
+        const checkbox = document.getElementById(checkboxId);
+        if (checkbox) {
+          checkbox.addEventListener('change', function() {
+            autoSaveCheckbox(checkboxId);
+          });
+        }
+      });
+      
+      // Checkbox addPhoneToTitle yang menggunakan sistem terpisah
+      const addPhoneCheckbox = document.getElementById('addPhoneToTitle');
+      if (addPhoneCheckbox) {
+        addPhoneCheckbox.addEventListener('change', function() {
+          localStorage.setItem('aiAddPhoneToTitle', this.checked);
+        });
+      }
+    }
+    
+    // Fungsi untuk mengupdate label checkbox sesuai status
+    function updateCheckboxLabels() {
+      const checkboxes = ['gambar1Sequential', 'lokasiSequential'];
+      
+      checkboxes.forEach(checkboxId => {
+        const checkbox = document.getElementById(checkboxId);
+        const labelId = checkboxId.replace('Sequential', 'SequentialLabel');
+        const label = document.getElementById(labelId);
+        
+        if (checkbox && label) {
+          if (checkbox.checked) {
+            label.textContent = 'Akan di Posting Random';
+          } else {
+            label.textContent = 'Posting Random';
+          }
+        }
+      });
+    }
+    
+
+
+    // Custom Notification System
+    function showNotification(message, type = 'info', duration = 4000) {
+      const container = document.getElementById('notificationContainer');
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      
+      const icons = {
+        success: '✓',
+        error: '✕',
+        warning: '⚠',
+        info: 'ℹ'
+      };
+      
+      notification.innerHTML = `
+        <div class="notification-content">
+          <div class="notification-icon">${icons[type] || icons.info}</div>
+          <div class="notification-text">${message}</div>
+          <button class="notification-close" onclick="removeNotification(this.parentElement.parentElement)">×</button>
+        </div>
+      `;
+      
+      container.appendChild(notification);
+      
+      // Trigger fade in animation
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 10);
+      
+      // Auto remove after duration
+      setTimeout(() => {
+        removeNotification(notification);
+      }, duration);
+      
+      return notification;
+    }
+    
+    function removeNotification(notification) {
+      if (notification && notification.parentElement) {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (notification.parentElement) {
+            notification.parentElement.removeChild(notification);
+          }
+        }, 400);
+      }
+    }
+    
+    // Custom alert replacement
+    function customAlert(message, type = 'info') {
+      showNotification(message, type);
+    }
+    
+    function customConfirm(message, callback) {
+      const result = confirm(message); // Keep confirm for now as it needs user interaction
+      if (result && callback) {
+        callback();
+      }
+      return result;
+    }
+
+    // Inisialisasi halaman: set slot terakhir, update nama slot, dan load data
+    function initializePage() {
+      populateInitialSlots();
+      loadAddedSlots(); // Memuat slot yang ditambahkan sebelumnya
+
+      let lastSlot = localStorage.getItem(LAST_SELECTED_SLOT_KEY) || 'data1';
+      document.getElementById('dataSlot').value = lastSlot;
+      updateSlotNames();
+      loadData();
+      updateDisplayedSlotName();
+      updateLineCount('judul');
+      updateLineCount('lokasi');
+      document.getElementById('judul').focus();
+      
+      // Menambahkan event listener untuk preview images
+      addImageClickListeners();
+      
+      // Setup listener untuk kolom gambar utama dan gambar2
+      setupListenersForField(1);
+      setupListenersForField(2);
+      
+      // Setup textarea dengan nomor baris
+      setupTextareaWithLineNumbers('judul');
+      setupTextareaWithLineNumbers('gambar1');
+      setupTextareaWithLineNumbers('gambar2');
+      setupTextareaWithLineNumbers('lokasi');
+    }
+
+    // Fungsi untuk mengisi opsi slot awal (data1 - data10)
+    function populateInitialSlots() {
+      let select = document.getElementById('dataSlot');
+      for (let i = 1; i <= INITIAL_SLOTS; i++) {
+        let slotValue = `data${i}`;
+        let option = new Option(slotValue, slotValue);
+        select.add(option);
+      }
+    }
+
+    // Fungsi untuk memuat slot yang telah ditambahkan sebelumnya
+    function loadAddedSlots() {
+      let addedSlots = JSON.parse(localStorage.getItem(ADDED_SLOTS_KEY) || "[]");
+      let select = document.getElementById('dataSlot');
+      addedSlots.forEach(slotValue => {
+        if (select.querySelector(`option[value="${slotValue}"]`) === null) { // Cek apakah slot sudah ada
+          let option = new Option(slotValue, slotValue);
+          select.add(option);
+        }
+      });
+    }
+
+    // Mengubah slot penyimpanan dan load data sesuai slot yang dipilih
+    function changeSlot() {
+      let selectedSlot = document.getElementById('dataSlot').value;
+      localStorage.setItem(LAST_SELECTED_SLOT_KEY, selectedSlot);
+      loadData();
+      updateDisplayedSlotName();
+    }
+
+    // Mengganti nama slot penyimpanan
+    function renameSlot() {
+      let selectedSlot = document.getElementById('dataSlot').value;
+      let currentName = localStorage.getItem(`${SLOT_NAME_PREFIX}${selectedSlot}`) || selectedSlot;
+      let newName = prompt("Masukkan nama baru:", currentName);
+      if (newName) {
+        localStorage.setItem(`${SLOT_NAME_PREFIX}${selectedSlot}`, newName);
+        updateSlotNames();
+        updateDisplayedSlotName();
+      }
+    }
+
+    // Memperbarui tampilan nama pada dropdown slot
+    function updateSlotNames() {
+      let options = document.getElementById('dataSlot').options;
+      for (let option of options) {
+        let slotName = localStorage.getItem(`${SLOT_NAME_PREFIX}${option.value}`);
+        if (slotName) {
+          option.textContent = slotName;
+        } else {
+          option.textContent = option.value;
+        }
+      }
+    }
+
+    // Memperbarui nama slot yang ditampilkan di judul halaman
+    function updateDisplayedSlotName() {
+      let selectedSlot = document.getElementById('dataSlot').value;
+      let slotName = localStorage.getItem(`${SLOT_NAME_PREFIX}${selectedSlot}`) || selectedSlot;
+      // h2 element sudah dihapus, fungsi ini tidak perlu melakukan apa-apa
+    }
+
+    // Validasi input angka
+    function validateNumberInput(inputId, errorId) {
+      const inputElement = document.getElementById(inputId);
+      const errorElement = document.getElementById(errorId);
+      const value = inputElement.value;
+
+      const lines = value.split(/\r?\n/).map(line => line.trim()).filter(line => line !== '');
+      const hasInvalidLine = lines.some(line => !/^\d+$/.test(line));
+
+      if (hasInvalidLine) {
+        errorElement.style.display = "block";
+        return false;
+      } else {
+        errorElement.style.display = "none";
+        return true;
+      }
+    }
+
+    // Menyimpan data form ke localStorage berdasarkan slot
+    function saveData() {
+      if (!validateNumberInput('harga', 'harga-error') || !validateNumberInput('delay', 'delay-error')) {
+        customAlert("Periksa kembali input harga dan delay. Hanya angka yang diperbolehkan.", "warning");
+        return;
+      }
+
+      let slot = document.getElementById('dataSlot').value;
+      let data = {};
+      
+      // Daftar ID elemen yang perlu disimpan
+      const elementsToSave = [
+        'judul', 'harga', 'kategori', 'kategoriTerpilih', 'kondisi', 'deskripsi',
+        'lokasi', 'hashtag', 'delay'
+      ];
+      
+      elementsToSave.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          data[id] = element.value;
+        }
+      });
+      
+      // Simpan semua kolom gambar yang ada
+      for(let i = 1; i <= 10; i++) {
+          const textarea = document.getElementById(`gambar${i}`);
+          if (textarea) {
+              data[`gambar${i}`] = textarea.value;
+              const duplicateInput = document.getElementById(`gambar${i}Duplicate`);
+              if (duplicateInput) {
+                  data[`gambar${i}Duplicate`] = duplicateInput.value;
+              }
+              const checkbox = document.getElementById(`gambar${i}Sequential`);
+               if (checkbox) {
+                   data[`gambar${i}Sequential`] = checkbox.checked;
+               }
+          }
+      }
+      
+      // Simpan checkbox lokasiSequential
+      const lokasiCheckbox = document.getElementById('lokasiSequential');
+      if (lokasiCheckbox) {
+        data['lokasiSequential'] = lokasiCheckbox.checked;
+      }
+      
+      localStorage.setItem(slot, JSON.stringify(data));
+      customAlert("Data berhasil disimpan!", "success");
+    }
+
+    // Mengambil data dari localStorage dan mengisi form
+    function loadData() {
+      let slot = document.getElementById('dataSlot').value;
+      let data = localStorage.getItem(slot);
+
+      // Reset form ke kondisi awal sebelum load
+      const fieldsToClear = ['judul', 'harga', 'kategoriTerpilih', 'deskripsi', 'lokasi', 'hashtag'];
+      fieldsToClear.forEach(id => document.getElementById(id).value = '');
+      document.getElementById('delay').value = '25';
+      document.getElementById('kategori').value = 'Mebel';
+      document.getElementById('kondisi').value = 'Baru';
+      
+      // Reset gambar utama dan gambar2
+      const mainImageTextarea = document.getElementById('gambar1');
+      if (mainImageTextarea) mainImageTextarea.value = '';
+      const mainImageDuplicate = document.getElementById('gambar1Duplicate');
+      if(mainImageDuplicate) mainImageDuplicate.value = '1';
+      
+      const gambar2Textarea = document.getElementById('gambar2');
+      if (gambar2Textarea) gambar2Textarea.value = '';
+
+
+      if (data) {
+        try {
+          data = JSON.parse(data);
+          
+          const elementsToLoad = [
+            'judul', 'harga', 'kategori', 'kategoriTerpilih', 'kondisi', 'deskripsi',
+            'lokasi', 'hashtag', 'delay'
+          ];
+          
+          elementsToLoad.forEach(id => {
+            const element = document.getElementById(id);
+            if (element && data.hasOwnProperty(id)) {
+                element.value = data[id] || '';
+            }
+          });
+
+          // Catatan: Hanya gambar1 dan gambar2 yang didukung saat ini
+          
+          // Isi data untuk semua kolom gambar
+          for (let i = 1; i <= 10; i++) {
+              if (data.hasOwnProperty(`gambar${i}`)) {
+                  const textarea = document.getElementById(`gambar${i}`);
+                  if (textarea) textarea.value = data[`gambar${i}`];
+
+                  const duplicateInput = document.getElementById(`gambar${i}Duplicate`);
+                  if (duplicateInput && data.hasOwnProperty(`gambar${i}Duplicate`)) {
+                      duplicateInput.value = data[`gambar${i}Duplicate`];
+                  }
+
+                  const checkbox = document.getElementById(`gambar${i}Sequential`);
+                   if (checkbox && data.hasOwnProperty(`gambar${i}Sequential`)) {
+                       checkbox.checked = data[`gambar${i}Sequential`];
+                       toggleSequentialText(`gambar${i}Sequential`, `gambar${i}SequentialLabel`);
+                   }
+              }
+          }
+          
+          // Load checkbox lokasiSequential
+          const lokasiCheckbox = document.getElementById('lokasiSequential');
+          if (lokasiCheckbox && data.hasOwnProperty('lokasiSequential')) {
+            lokasiCheckbox.checked = data['lokasiSequential'];
+            toggleSequentialText('lokasiSequential', 'lokasiSequentialLabel');
+          }
+
+        } catch (e) {
+          console.error("Error parsing data for slot", slot, e);
+          customAlert("Error memuat data. Data mungkin rusak.", "error");
+        }
+      }
+
+      // Validasi dan update UI setelah memuat data atau mereset
+      validateNumberInput('harga', 'harga-error');
+      validateNumberInput('delay', 'delay-error');
+      
+      updateLineCount('judul');
+      updateLineCount('lokasi');
+      updateLineNumbers('judul');
+      updateLineNumbers('lokasi');
+
+      // Update gambar1 dan gambar2
+      if (document.getElementById('gambar1')) {
+        updateLineCount('gambar1');
+        updateLineNumbers('gambar1');
+        updateImagePreview(1);
+      }
+      if (document.getElementById('gambar2')) {
+        updateLineCount('gambar2');
+        updateLineNumbers('gambar2');
+        updateImagePreview(2);
+      }
+      
+      // Update label checkbox sesuai status yang dimuat
+      updateCheckboxLabels();
+      
+      addImageClickListeners();
+    }
+
+    // Menghapus data pada slot yang dipilih
+    function clearData() {
+      let slot = document.getElementById('dataSlot').value;
+      let slotName = localStorage.getItem(`${SLOT_NAME_PREFIX}${slot}`) || slot;
+      if (confirm(`Anda yakin ingin menghapus data dari slot "${slotName}"?`)) {
+        localStorage.removeItem(slot);
+        loadData();
+        customAlert("Data dihapus!", "success");
+      }
+    }
+
+    // Mengekspor data slot saat ini ke file JSON
+    function exportData() {
+      let slot = document.getElementById('dataSlot').value;
+      let data = localStorage.getItem(slot);
+      if (data) {
+        let slotName = localStorage.getItem(`${SLOT_NAME_PREFIX}${slot}`) || slot;
+        let exportObject = {
+          slotName: slotName,
+          data
+        };
+        let json = JSON.stringify(exportObject);
+        let blob = new Blob([json], {
+          type: 'application/json'
+        });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = slot + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else {
+        customAlert("Tidak ada data untuk diekspor!", "warning");
+      }
+    }
+
+    // Fungsi untuk me-reset input file
+    function resetFileInput() {
+      const importFile = document.getElementById('importFile');
+      importFile.value = "";
+      const newImportFile = document.createElement('input');
+      newImportFile.type = 'file';
+      newImportFile.id = 'importFile';
+      newImportFile.onchange = importData;
+      importFile.parentNode.replaceChild(newImportFile, importFile);
+    }
+
+    // Mengimpor data dari file JSON dan menyimpannya pada slot saat ini
+    function importData(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const importObject = JSON.parse(e.target.result);
+            let slot = document.getElementById('dataSlot').value;
+            localStorage.setItem(slot, importObject.data);
+
+            // Import slot name
+            if (importObject.slotName) {
+              localStorage.setItem(`${SLOT_NAME_PREFIX}${slot}`, importObject.slotName);
+            }
+
+            loadData();
+            updateSlotNames();
+            updateDisplayedSlotName();
+            customAlert("Data berhasil diimpor!", "success");
+          } catch (error) {
+            console.error("Error importing data:", error);
+            customAlert("Gagal mengimpor. Format file tidak valid. Pastikan file adalah JSON yang benar.", "error");
+          } finally {
+            resetFileInput();
+          }
+        };
+        reader.readAsText(file);
+      }
+    }
+
+    // Fungsi untuk menghitung dan menampilkan jumlah baris
+    function updateLineCount(textareaId) {
+      const textarea = document.getElementById(textareaId);
+      if (!textarea) {
+        return;
+      }
+      
+      const lines = textarea.value.split('\n');
+      const lineCount = lines.length;
+      const lineCountDisplay = document.getElementById(`${textareaId}-line-count`);
+      
+      if (lineCountDisplay) {
+        lineCountDisplay.textContent = `Baris: ${lineCount}`;
+      }
+      
+      updateLineNumbers(textareaId);
+    }
+    
+    // Fungsi untuk mengupdate nomor baris
+    function updateLineNumbers(textareaId) {
+      const textarea = document.getElementById(textareaId);
+      const lineNumbersDiv = document.getElementById(`${textareaId}-line-numbers`);
+      
+      if (!textarea || !lineNumbersDiv) {
+        return;
+      }
+      
+      const lines = textarea.value.split('\n');
+      const lineCount = lines.length;
+      
+      let lineNumbersText = '';
+      for (let i = 1; i <= lineCount; i++) {
+        lineNumbersText += i + '\n';
+      }
+      
+      lineNumbersDiv.textContent = lineNumbersText;
+      lineNumbersDiv.scrollTop = textarea.scrollTop;
+    }
+    
+    // Fungsi untuk setup textarea dengan nomor baris
+    function setupTextareaWithLineNumbers(textareaId) {
+      const textarea = document.getElementById(textareaId);
+      if (!textarea || textarea.parentElement.classList.contains('textarea-with-line-numbers')) return;
+      
+      const wrapper = document.createElement('div');
+      wrapper.className = 'textarea-with-line-numbers';
+      
+      const lineNumbersDiv = document.createElement('div');
+      lineNumbersDiv.className = 'line-numbers';
+      lineNumbersDiv.id = `${textareaId}-line-numbers`;
+      
+      textarea.parentNode.insertBefore(wrapper, textarea);
+      
+      wrapper.appendChild(lineNumbersDiv);
+      wrapper.appendChild(textarea);
+      
+      textarea.addEventListener('scroll', () => { lineNumbersDiv.scrollTop = textarea.scrollTop; });
+      textarea.addEventListener('input', () => updateLineNumbers(textareaId));
+      
+      const resizeObserver = new ResizeObserver((entries) => {
+        // Debounce untuk mencegah loop notifications
+        requestAnimationFrame(() => {
+          try {
+            for (let entry of entries) {
+              const target = entry.target;
+              if (target === textarea) {
+                lineNumbersDiv.style.height = textarea.style.height;
+                lineNumbersDiv.scrollTop = textarea.scrollTop;
+              }
+            }
+          } catch (error) {
+            // Suppress ResizeObserver errors
+            if (error.name !== 'ResizeObserverError') {
+              console.error('ResizeObserver error:', error);
+            }
+          }
+        });
+      });
+      resizeObserver.observe(textarea);
+      
+      updateLineNumbers(textareaId);
+    }
+
+    // Fungsi untuk menambahkan slot baru
+    function addSlot() {
+      let select = document.getElementById('dataSlot');
+      let nextSlotNumber = select.options.length + 1;
+
+      if (nextSlotNumber > MAX_SLOTS) {
+        customAlert("Anda telah mencapai batas maksimum slot penyimpanan.", "warning");
+        return;
+      }
+
+      let newSlotValue = `data${nextSlotNumber}`;
+      let newOption = new Option(newSlotValue, newSlotValue);
+      select.add(newOption);
+
+      let addedSlots = JSON.parse(localStorage.getItem(ADDED_SLOTS_KEY) || "[]");
+      addedSlots.push(newSlotValue);
+      localStorage.setItem(ADDED_SLOTS_KEY, JSON.stringify(addedSlots));
+
+      localStorage.setItem(LAST_SELECTED_SLOT_KEY, newSlotValue);
+
+      select.value = newSlotValue;
+      changeSlot();
+      updateSlotNames();
+    }
+
+    // Fungsi untuk membuka modal AI Content Generator (alias untuk kompatibilitas)
+    function openAIContentGenerator() {
+      openAIContentModal();
+    }
+
+    // Fungsi untuk membuka modal AI Content Generator
+    function openAIContentModal() {
+      const savedProductName = localStorage.getItem('aiProductName') || '';
+      const savedJudulLineCount = localStorage.getItem('aiJudulLineCount') || '5';
+      const savedPhoneNumber = localStorage.getItem('aiPhoneNumber') || '';
+      const savedAddPhoneToTitle = localStorage.getItem('aiAddPhoneToTitle') !== 'false';
+      
+      document.getElementById('productName').value = savedProductName;
+      document.getElementById('judulLineCount').value = savedJudulLineCount;
+      document.getElementById('phoneNumber').value = savedPhoneNumber;
+      document.getElementById('addPhoneToTitle').checked = savedAddPhoneToTitle;
+      
+      document.getElementById('aiContentModal').style.display = 'block';
+      document.getElementById('productName').focus();
+    }
+
+    // Fungsi untuk menutup modal AI Content Generator
+    function closeAIContentModal() {
+      localStorage.setItem('aiProductName', document.getElementById('productName').value);
+      localStorage.setItem('aiJudulLineCount', document.getElementById('judulLineCount').value);
+      localStorage.setItem('aiPhoneNumber', document.getElementById('phoneNumber').value);
+      localStorage.setItem('aiAddPhoneToTitle', document.getElementById('addPhoneToTitle').checked);
+      
+      document.getElementById('aiContentModal').style.display = 'none';
+      document.getElementById('productName').value = '';
+       document.getElementById('judulLineCount').value = '5';
+       document.getElementById('phoneNumber').value = '';
+       document.getElementById('addPhoneToTitle').checked = true;
+       document.getElementById('aiLoading').style.display = 'none';
+    }
+
+    // Variabel untuk menyimpan data lokasi
+    let lokasiData = [];
+
+    // Fungsi untuk membuka modal lokasi
+    function openLokasiModal() {
+      document.getElementById('lokasiModal').style.display = 'block';
+      if (lokasiData.length === 0) {
+        loadLokasiData();
+      }
+    }
+
+    // Fungsi untuk menutup modal lokasi
+    function closeLokasiModal() {
+      document.getElementById('lokasiModal').style.display = 'none';
+      document.getElementById('lokasiSearch').value = '';
+      document.getElementById('lokasiResults').style.display = 'none';
+      selectedLokasi = [];
+    }
+
+    // Fungsi untuk membuka modal manual link
+    function openManualLinkModal() {
+      document.getElementById('manualLinkModal').style.display = 'block';
+    }
+
+    // Fungsi untuk menutup modal manual link
+    function closeManualLinkModal() {
+      document.getElementById('manualLinkModal').style.display = 'none';
+    }
+
+    // Fungsi untuk menyalin link manual
+    function copyManualLink() {
+      const link = 'https://www.azkazamdigital.com/upload-gambar/';
+      navigator.clipboard.writeText(link).then(function() {
+        showNotification('Link berhasil disalin ke clipboard!', 'success');
+      }).catch(function(err) {
+        // Fallback untuk browser yang tidak mendukung clipboard API
+        const textArea = document.createElement('textarea');
+        textArea.value = link;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showNotification('Link berhasil disalin ke clipboard!', 'success');
+      });
+    }
+
+    // Fungsi untuk menerapkan lokasi yang dipilih
+    function applySelectedLokasi() {
+      if (selectedLokasi.length > 0) {
+        updateLokasiField();
+        showNotification(`${selectedLokasi.length} lokasi berhasil diterapkan`, 'success');
+      } else {
+        showNotification('Tidak ada lokasi yang dipilih', 'warning');
+      }
+      closeLokasiModal();
+    }
+    
+    function selectAllLokasi() {
+      const searchTerm = document.getElementById('lokasiSearch').value.toLowerCase();
+      const filteredLokasi = lokasiData.filter(lokasi => 
+        lokasi.nama.toLowerCase().includes(searchTerm)
+      );
+      
+      const allSelected = filteredLokasi.every(lokasi => selectedLokasi.includes(lokasi.nama));
+      
+      if (allSelected) {
+        filteredLokasi.forEach(lokasi => {
+          const index = selectedLokasi.indexOf(lokasi.nama);
+          if (index > -1) {
+            selectedLokasi.splice(index, 1);
+          }
+        });
+      } else {
+        filteredLokasi.forEach(lokasi => {
+          if (!selectedLokasi.includes(lokasi.nama)) {
+            selectedLokasi.push(lokasi.nama);
+          }
+        });
+      }
+      searchLokasi();
+    }
+    
+    function updateSelectAllButton(filteredLokasi) {
+      const selectAllBtn = document.getElementById('selectAllBtn');
+      const allSelected = filteredLokasi.every(lokasi => selectedLokasi.includes(lokasi.nama));
+      
+      if (allSelected) {
+        selectAllBtn.innerHTML = '<i class="fas fa-minus-square"></i> Batalkan Semua';
+        selectAllBtn.className = 'btn btn-outline-danger btn-sm';
+      } else {
+        selectAllBtn.innerHTML = '<i class="fas fa-check-square"></i> Pilih Semua';
+        selectAllBtn.className = 'btn btn-outline-primary btn-sm';
+      }
+    }
+
+    async function loadLokasiData() {
+      try {
+        const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRoHHzJ4vovorugMtI30o_LAE0n6rPwScpTL25xM-QPLPL-Gr32GLXMAw3qtJEMMBES0FXmLeRsl44I/pub?output=csv');
+        if (!response.ok) { throw new Error('Network response was not ok'); }
+        const csvText = await response.text();
+        
+        const lines = csvText.split('\n');
+        lokasiData = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (line && line.length > 0) {
+            let cleanLine = line.replace(/^"|"$/g, '').replace(/""/g, '"');
+            lokasiData.push({ nama: cleanLine, detail: '' });
+          }
+        }
+      } catch (error) {
+        console.error('Error loading lokasi data:', error);
+        try { if (typeof showNotification === 'function') { showNotification('Gagal memuat data lokasi', 'error'); } } catch (e) {}
+      }
+    }
+
+    let selectedLokasi = [];
+
+    function searchLokasi() {
+      const searchTerm = document.getElementById('lokasiSearch').value.toLowerCase();
+      const resultsDiv = document.getElementById('lokasiResults');
+      const controlsDiv = document.getElementById('lokasiControls');
+      const countDiv = document.getElementById('lokasiCount');
+      
+      if (searchTerm.length < 2) {
+        resultsDiv.style.display = 'none';
+        controlsDiv.style.display = 'none';
+        return;
+      }
+      
+      const filteredLokasi = lokasiData.filter(lokasi => 
+        lokasi.nama.toLowerCase().includes(searchTerm)
+      );
+      
+      countDiv.textContent = `${filteredLokasi.length} lokasi ditemukan`;
+      controlsDiv.style.display = filteredLokasi.length > 0 ? 'block' : 'none';
+      
+      if (filteredLokasi.length > 0) {
+        let html = '';
+        filteredLokasi.forEach((lokasi, index) => {
+          const isChecked = selectedLokasi.includes(lokasi.nama);
+          html += `
+            <div class="lokasi-item" style="padding: 12px 16px; border-bottom: 1px solid #e9ecef; display: flex; align-items: center; gap: 12px; background-color: white; transition: background-color 0.2s;" 
+                 onmouseover="this.style.backgroundColor='#f8f9fa'" 
+                 onmouseout="this.style.backgroundColor='white'">
+              <input type="checkbox" id="lokasi_${index}" ${isChecked ? 'checked' : ''} 
+                     onchange="toggleLokasi('${lokasi.nama.replace(/'/g, "\\'")}')"
+                     class="form-check-input" style="margin: 0; transform: scale(1.1);">
+              <label for="lokasi_${index}" style="cursor: pointer; flex: 1; margin: 0; line-height: 1.4;">
+                <div style="font-weight: 400; color: #212529;">${lokasi.nama}</div>
+              </label>
+            </div>
+          `;
+        });
+        resultsDiv.innerHTML = html;
+        resultsDiv.style.display = 'block';
+        updateSelectAllButton(filteredLokasi);
+      } else {
+        resultsDiv.innerHTML = '<div style="padding: 20px; text-align: center; color: #6c757d; font-style: italic;">Tidak ada lokasi yang ditemukan</div>';
+        resultsDiv.style.display = 'block';
+        controlsDiv.style.display = 'none';
+      }
+    }
+
+    function toggleLokasi(namaLokasi) {
+      const index = selectedLokasi.indexOf(namaLokasi);
+      if (index > -1) {
+        selectedLokasi.splice(index, 1);
+      } else {
+        selectedLokasi.push(namaLokasi);
+      }
+    }
+
+    function updateLokasiField() {
+      const lokasiTextarea = document.getElementById('lokasi');
+      const currentValue = lokasiTextarea.value.trim();
+      let allLokasi = [];
+      
+      if (currentValue) {
+        allLokasi = [...currentValue.split('\n').filter(loc => loc.trim())];
+      }
+      
+      selectedLokasi.forEach(lokasi => {
+        if (!allLokasi.includes(lokasi)) {
+          allLokasi.push(lokasi);
+        }
+      });
+      
+      lokasiTextarea.value = allLokasi.join('\n');
+      updateLineCount('lokasi');
+    }
+
+    function selectLokasi(namaLokasi) {
+      toggleLokasi(namaLokasi);
+    }
+    
+    function clearLokasiData() {
+      if (confirm('Apakah Anda yakin ingin menghapus semua data lokasi?')) {
+        document.getElementById('lokasi').value = '';
+        updateLineCount('lokasi');
+        showNotification('Data lokasi berhasil dihapus', 'success');
+      }
+    }
+    
+    function retryLoadLokasi() {
+      lokasiData = [];
+      selectedLokasi = [];
+      document.getElementById('lokasiResults').style.display = 'none';
+      document.getElementById('lokasiControls').style.display = 'none';
+      document.getElementById('lokasiSearch').value = '';
+      loadLokasiData();
+    }
+    
+    function useBackupLokasi() {
+      lokasiData = [...backupLokasiData];
+      selectedLokasi = [];
+      document.getElementById('lokasiResults').style.display = 'none';
+      document.getElementById('lokasiControls').style.display = 'none';
+      document.getElementById('lokasiSearch').value = '';
+      showNotification(`Menggunakan ${lokasiData.length} data lokasi backup`, 'info');
+    }
+
+    const API_KEY = "[GROQ_API_KEY_REDACTED]";
+
+    async function makeAPIRequest(prompt) {
+        const payload = {
+            model: "openai/gpt-oss-20b",
+            messages: [
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            stream: false,
+            max_tokens: 1024,
+            temperature: 0.7
+        };
+
+        const maxRetries = 5;
+        let attempt = 0;
+        let lastError;
+
+        while (attempt < maxRetries) {
+            try {
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    let errorData;
+                    try { errorData = await response.json(); } catch { errorData = null; }
+                    
+                    // Check for 503 Service Unavailable (Cold Start / No Instances) or 429 Too Many Requests
+                    if (response.status === 503 || response.status === 429) {
+                        console.warn(`Attempt ${attempt + 1}: ${response.status} Error. Retrying...`);
+                        attempt++;
+                        if (attempt >= maxRetries) {
+                            throw new Error(`API Error: ${response.status} - ${JSON.stringify(errorData) || 'Service Unavailable/Rate Limited after retries'}`);
+                        }
+                        // Wait with exponential backoff + jitter
+                        const delay = Math.min(1000 * (2 ** attempt) + Math.random() * 500, 10000);
+                        await new Promise(r => setTimeout(r, delay));
+                        continue;
+                    }
+
+                    throw new Error(`API Error: ${response.status} - ${JSON.stringify(errorData) || 'Unknown error'}`);
+                }
+
+                const data = await response.json();
+                const text = data?.choices?.[0]?.message?.content;
+                if (text) { return text; }
+                throw new Error('Gagal memproses respons dari AI');
+
+            } catch (err) {
+                console.error("API Request Failed:", err);
+                lastError = err;
+                
+                // If it's not a 503 error that we already handled in the loop, we might want to break or retry depending on the error type.
+                // For network errors (fetch throws), we can also retry.
+                if (err.message.includes('Failed to fetch') || err.name === 'TypeError') {
+                     attempt++;
+                     if (attempt >= maxRetries) break;
+                     const delay = Math.min(1000 * (2 ** attempt) + Math.random() * 500, 10000);
+                     await new Promise(r => setTimeout(r, delay));
+                     continue;
+                }
+                
+                // If it's a specific API error other than 503 (caught above inside !response.ok), rethrow.
+                if (err.message.includes('API Error')) {
+                     // If it was 503, it would have been handled by continue. If we are here, it's another error code or max retries reached.
+                     throw err; 
+                }
+                
+                // For other errors, rethrow immediately
+                 throw err;
+            }
+        }
+        throw lastError || new Error('Gagal menghubungi API setelah beberapa percobaan.');
+    }
+    
+      function formatPhoneNumber(input) {
+        let value = input.value.replace(/\D/g, '');
+        let formatted = '';
+        for (let i = 0; i < value.length; i++) {
+          if (i > 0 && i % 3 === 0) {
+            formatted += '-';
+          }
+          formatted += value[i];
+        }
+        input.value = formatted;
+      }
+
+      async function generateAIContent() {
+       const productName = document.getElementById('productName').value.trim();
+        const judulLineCount = parseInt(document.getElementById('judulLineCount').value);
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        const addPhoneToTitle = document.getElementById('addPhoneToTitle').checked;
+
+        localStorage.setItem('aiProductName', productName);
+        localStorage.setItem('aiJudulLineCount', judulLineCount.toString());
+        localStorage.setItem('aiPhoneNumber', phoneNumber);
+        localStorage.setItem('aiAddPhoneToTitle', addPhoneToTitle);
+
+        if (!productName) { customAlert('Silakan masukkan nama produk!', 'warning'); return; }
+        if (!judulLineCount || judulLineCount < 1) { customAlert('Jumlah baris judul harus minimal 1!', 'warning'); return; }
+
+       document.getElementById('aiLoading').style.display = 'block';
+       try {
+         const titlesPrompt = `Kamu adalah asisten ahli SEO untuk e-commerce. Buatkan ${judulLineCount} variasi judul yang menarik dan menjual untuk produk "${productName}" dalam Bahasa Indonesia.
+Setiap judul harus:
+1. SANGAT SINGKAT: maksimal 2-3 kata saja
+2. Contoh format: "ikat pinggang keren", "ikat pinggang murah", "sepatu sport", "tas wanita"
+3. Mengandung kata kunci yang relevan
+4. Menarik perhatian pembeli
+5. Sesuai untuk marketplace
+PENTING: Berikan HANYA daftar judul, tanpa penomoran, tanpa tanda hubung, dan tanpa teks pembuka atau penutup. Setiap judul harus berada di baris baru.`;
+         const titlesResult = await makeAPIRequest(titlesPrompt);
+         const titles = titlesResult.split('\n').filter(title => title.trim() !== '');
+         
+         const descriptionPrompt = `Kamu adalah seorang copywriter profesional. Buatkan deskripsi produk yang menarik dan persuasif untuk "${productName}" dalam Bahasa Indonesia dengan format berikut:
+
+1. Mulai dengan 2 kalimat pembuka yang ringkas dan menarik (tanpa emoticon)
+2. Lanjutkan dengan daftar poin keunggulan menggunakan icon list seperti ini : ✅
+3. Setiap poin list: [Icon] [Judul poin]: [Deskripsi singkat] (TANPA emoticon di akhir)
+4. Akhiri kata kunci yang relevan. dengan kata kunci 15 sampai 20 kata kunci, tapi sebelum menulis kata kunci enter Kosong tanpa teks dulu 5x agar ada jarak antara list dengan kata kunci
+
+Contoh format poin:
+✅ Kualitas Premium: Bahan berkualitas tinggi dan tahan lama
+✅ Harga Terjangkau: Dapatkan nilai terbaik untuk investasi Anda
+✅ Desain Modern: Tampilan elegan yang sesuai dengan tren terkini
+Jangan terlalu banyak Point, cukup 2-3 poin saja.
+
+PENTING: Berikan HANYA deskripsi sesuai format di atas, tanpa penjelasan tambahan.`;
+         const descriptionResult = await makeAPIRequest(descriptionPrompt);
+         const descriptions = descriptionResult.split('\n').filter(desc => desc.trim() !== '');
+         
+         const keywordsPrompt = `Kamu adalah spesialis riset kata kunci. Berdasarkan produk "${productName}", buatkan 20 kata kunci (keywords) yang paling relevan untuk SEO dan iklan.
+PENTING: Berikan HANYA daftar kata kunci yang dipisahkan oleh koma, tanpa teks tambahan.`;
+         const keywordsResult = await makeAPIRequest(keywordsPrompt);
+         const keywords = keywordsResult.split(',').map(k => k.trim()).filter(k => k !== '');
+         
+          let finalTitles = titles.slice(0, judulLineCount);
+          if (phoneNumber && addPhoneToTitle) {
+            finalTitles = finalTitles.map(title => `${title} WA. ${phoneNumber}`);
+          }
+          
+          let finalDescription = '';
+          if (phoneNumber) {
+            finalDescription = `📞 WA. ${phoneNumber}\n\n`;
+          }
+          
+          const cleanedDescriptions = descriptions.map(desc => desc.replace(/<br\s*\/?>/gi, '').replace(/\*/g, ''));
+          finalDescription += cleanedDescriptions.join('\n');
+          
+          document.getElementById('judul').value = finalTitles.join('\n');
+          document.getElementById('deskripsi').value = finalDescription;
+          document.getElementById('hashtag').value = keywords.join(', ');
+
+         updateLineCount('judul');
+         updateLineCount('deskripsi');
+         updateLineCount('hashtag');
+
+         closeAIContentModal();
+         customAlert('Konten AI berhasil digenerate! Silakan review dan edit sesuai kebutuhan.', 'success');
+       } catch (error) {
+         console.error('Error generating AI content:', error);
+         customAlert(`Terjadi kesalahan: ${error.message || 'Tidak diketahui'}`, 'error');
+       } finally {
+         document.getElementById('aiLoading').style.display = 'none';
+       }
+     }
+
+    const unicodeStyles = {
+      bold: { a: "𝐚", b: "𝐛", c: "𝐜", d: "𝐝", e: "𝐞", f: "𝐟", g: "𝐠", h: "𝐡", i: "𝐢", j: "𝐣", k: "𝐤", l: "𝐥", m: "𝐦", n: "𝐧", o: "𝐨", p: "𝐩", q: "𝐪", r: "𝐫", s: "𝐬", t: "𝐭", u: "𝐮", v: "𝐯", w: "𝐰", x: "𝐱", y: "𝐲", z: "𝐳", A: "𝐀", B: "𝐁", C: "𝐂", D: "𝐃", E: "𝐄", F: "𝐅", G: "𝐆", H: "𝐇", I: "𝐈", J: "𝐉", K: "𝐊", L: "𝐋", M: "𝐌", N: "𝐍", O: "𝐎", P: "𝐏", Q: "𝐐", R: "𝐑", S: "𝐒", T: "𝐓", U: "𝐔", V: "𝐕", W: "𝐖", X: "𝐗", Y: "𝐘", Z: "𝐙" },
+      "bold-sans": { a: "𝗮", b: "𝗯", c: "𝗰", d: "𝗱", e: "𝗲", f: "𝗳", g: "𝗴", h: "𝗵", i: "𝗶", j: "𝗷", k: "𝗸", l: "𝗹", m: "𝗺", n: "𝗻", o: "𝗼", p: "𝗽", q: "𝗾", r: "𝗿", s: "𝘀", t: "𝘁", u: "𝘂", v: "𝘃", w: "𝘄", x: "𝘅", y: "𝘆", z: "𝘇", A: "𝗔", B: "𝗕", C: "𝗖", D: "𝗗", E: "𝗘", F: "𝗙", G: "𝗚", H: "𝗛", I: "𝗜", J: "𝗝", K: "𝗞", L: "𝗟", M: "𝗠", N: "𝗡", O: "𝗢", P: "𝗣", Q: "𝗤", R: "𝗥", S: "𝗦", T: "𝗧", U: "𝗨", V: "𝗩", W: "𝗪", X: "𝗫", Y: "𝗬", Z: "𝗭" },
+      italic: { a: "𝘢", b: "𝘣", c: "𝘤", d: "𝘥", e: "𝘦", f: "𝘧", g: "𝘨", h: "𝘩", i: "𝘪", j: "𝘫", k: "𝘬", l: "𝘭", m: "𝘮", n: "𝘯", o: "𝘰", p: "𝘱", q: "𝘲", r: "𝘳", s: "𝘴", t: "𝘵", u: "𝘶", v: "𝘷", w: "𝘸", x: "𝘹", y: "𝘺", z: "𝘻", A: "𝘈", B: "𝘉", C: "𝘊", D: "𝘋", E: "𝘌", F: "𝘍", G: "𝘎", H: "𝘏", I: "𝘐", J: "𝘑", K: "𝘒", L: "𝘓", M: "𝘔", N: "𝘕", O: "𝘖", P: "𝘗", Q: "𝘘", R: "𝘙", S: "𝘚", T: "𝘛", U: "𝘜", V: "𝘝", W: "𝘞", X: "𝘟", Y: "𝘠", Z: "𝘡" },
+      "bold-italic": { a: "𝙖", b: "𝙗", c: "𝙘", d: "𝙙", e: "𝙚", f: "𝙛", g: "𝙜", h: "𝙝", i: "𝙞", j: "𝙟", k: "𝙠", l: "𝙡", m: "𝙢", n: "𝙣", o: "𝙤", p: "𝙥", q: "𝙦", r: "𝙧", s: "𝙨", t: "𝙩", u: "𝙪", v: "𝙫", w: "𝙬", x: "𝙭", y: "𝙮", z: "𝙯", A: "𝘼", B: "𝘽", C: "𝘾", D: "𝘿", E: "𝙀", F: "𝙁", G: "𝙂", H: "𝙃", I: "𝙄", J: "𝙅", K: "𝙆", L: "𝙇", M: "𝙈", N: "𝙉", O: "𝙊", P: "𝙋", Q: "𝙌", R: "𝙍", S: "𝙎", T: "𝙏", U: "𝙐", V: "𝙑", W: "𝙒", X: "𝙓", Y: "𝙔", Z: "𝙕" },
+      monospace: { a: "𝚊", b: "𝚋", c: "𝚌", d: "𝚍", e: "𝚎", f: "𝚏", g: "𝚐", h: "𝚑", i: "𝚒", j: "𝚓", k: "𝚔", l: "𝚕", m: "𝚖", n: "𝚗", o: "𝚘", p: "𝚙", q: "𝚚", r: "𝚛", s: "𝚜", t: "𝚝", u: "𝚞", v: "𝚟", w: "𝚠", x: "𝚡", y: "𝚢", z: "𝚣", A: "𝙰", B: "𝙱", C: "𝙲", D: "𝙳", E: "𝙴", F: "𝙵", G: "𝙶", H: "𝙷", I: "𝙸", J: "𝙹", K: "𝙺", L: "𝙻", M: "𝙼", N: "𝙽", O: "𝙾", P: "𝙿", Q: "𝚀", R: "𝚁", S: "𝚂", T: "𝚃", U: "𝚄", V: "𝚅", W: "𝚆", X: "𝚇", Y: "𝚈", Z: "𝚉" },
+      fullwidth: { a: "ａ", b: "ｂ", c: "ｃ", d: "ｄ", e: "ｅ", f: "ｆ", g: "ｇ", h: "ｈ", i: "ｉ", j: "ｊ", k: "ｋ", l: "ｌ", m: "ｍ", n: "ｎ", o: "ｏ", p: "ｐ", q: "ｑ", r: "ｒ", s: "ｓ", t: "ｔ", u: "ｕ", v: "ｖ", w: "ｗ", x: "ｘ", y: "ｙ", z: "ｚ", A: "Ａ", B: "Ｂ", C: "Ｃ", D: "Ｄ", E: "Ｅ", F: "Ｆ", G: "Ｇ", H: "Ｈ", I: "Ｉ", J: "Ｊ", K: "Ｋ", L: "Ｌ", M: "Ｍ", N: "Ｎ", O: "Ｏ", P: "Ｐ", Q: "Ｑ", R: "Ｒ", S: "Ｓ", T: "Ｔ", U: "Ｕ", V: "Ｖ", W: "Ｗ", X: "Ｘ", Y: "Ｙ", Z: "Ｚ" },
+      "small-caps": { a: "ᴀ", b: "ʙ", c: "ᴄ", d: "ᴅ", e: "ᴇ", f: "ꜰ", g: "ɢ", h: "ʜ", i: "ɪ", j: "ᴊ", k: "ᴋ", l: "ʟ", m: "ᴍ", n: "ɴ", o: "ᴏ", p: "ᴘ", q: "ǫ", r: "ʀ", s: "ꜱ", t: "ᴛ", u: "ᴜ", v: "ᴠ", w: "ᴡ", x: "x", y: "ʏ", z: "ᴢ", A: "ᴀ", B: "ʙ", C: "ᴄ", D: "ᴅ", E: "ᴇ", F: "ꜰ", G: "ɢ", H: "ʜ", I: "ɪ", J: "ᴊ", K: "ᴋ", L: "ʟ", M: "ᴍ", N: "ɴ", O: "ᴏ", P: "ᴘ", Q: "ǫ", R: "ʀ", S: "ꜱ", T: "ᴛ", U: "ᴜ", V: "ᴠ", W: "ᴡ", X: "x", Y: "ʏ", Z: "ᴢ" },
+       "leet-style": { a: "4", e: "3", i: "1", o: "0", s: "5", A: "4", E: "3", I: "1", O: "0", S: "5", " ": "_" },
+       mixed: {} // Diisi secara dinamis
+    };
+    // Mengisi 'mixed' style
+    Object.keys(unicodeStyles).forEach(style => {
+      if (style !== 'mixed') {
+        Object.keys(unicodeStyles[style]).forEach(char => {
+          if (!unicodeStyles.mixed[char]) unicodeStyles.mixed[char] = [];
+          unicodeStyles.mixed[char].push(unicodeStyles[style][char]);
+        });
+      }
+    });
+
+    let originalTextBeforeUnicode = '';
+    
+    function resetUnicodeState() {
+      const judulTextarea = document.getElementById('judul');
+      if (judulTextarea && originalTextBeforeUnicode) {
+        if (judulTextarea.value.length < originalTextBeforeUnicode.length * 0.5) {
+          originalTextBeforeUnicode = '';
+        }
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', async function() {
+      document.getElementById('judul')?.addEventListener('input', () => setTimeout(resetUnicodeState, 100));
+      
+      // Setup auto-save untuk semua checkbox
+      setupCheckboxAutoSave();
+      
+      // Load frame dan PNG URLs dari GitHub
+      try {
+        availableFrameImageUrls = await loadUrlsFromGithub(GITHUB_FRAME_IMAGE_URL);
+        availablePngUrls = await loadUrlsFromGithub(GITHUB_PNG_IMAGE_URL);
+        console.log("Frame URLs loaded:", availableFrameImageUrls.length);
+        console.log("PNG URLs loaded:", availablePngUrls.length);
+      } catch (error) {
+        console.error("Error loading URLs from GitHub:", error);
+      }
+    });
+
+     function convertToUnicode() {
+       const judulTextarea = document.getElementById('judul');
+       const unicodeStyleSelect = document.getElementById('unicodeStyleSelect');
+       
+       if (!judulTextarea || !unicodeStyleSelect) return;
+       
+       const currentText = judulTextarea.value;
+       const selectedStyle = unicodeStyleSelect.value;
+       
+       if (!currentText.trim()) { customAlert('Silakan masukkan teks di kolom judul!', 'warning'); return; }
+       if (!originalTextBeforeUnicode) originalTextBeforeUnicode = currentText;
+       
+       const phoneRegex = /(WA\.?\s*\d{3}[-\s]?\d{3}[-\s]?\d{3,4}|\d{4}[-\s]?\d{4}[-\s]?\d{3,4}|\d{3}[-\s]?\d{3}[-\s]?\d{3,4})/gi;
+       const phoneNumbers = currentText.match(phoneRegex) || [];
+       let textWithPlaceholders = currentText;
+       phoneNumbers.forEach((phone, index) => { textWithPlaceholders = textWithPlaceholders.replace(phone, `__PHONE_${index}__`); });
+       
+       let convertedText = '';
+       const selectedUnicodeSet = unicodeStyles[selectedStyle];
+       
+       for (let i = 0; i < textWithPlaceholders.length; i++) {
+         const char = textWithPlaceholders[i];
+         if (char === '_' && textWithPlaceholders.substring(i, i + 8) === '__PHONE_') {
+           const endIndex = textWithPlaceholders.indexOf('__', i + 8) + 2;
+           const placeholder = textWithPlaceholders.substring(i, endIndex);
+           convertedText += placeholder;
+           i = endIndex - 1;
+         } else {
+           if (selectedUnicodeSet && selectedUnicodeSet[char]) {
+             if (selectedStyle === 'mixed') {
+               const options = selectedUnicodeSet[char];
+               convertedText += options[Math.floor(Math.random() * options.length)];
+             } else {
+               convertedText += selectedUnicodeSet[char];
+             }
+           } else {
+             convertedText += char;
+           }
+         }
+       }
+       
+       phoneNumbers.forEach((phone, index) => { convertedText = convertedText.replace(`__PHONE_${index}__`, phone); });
+       
+       judulTextarea.value = convertedText;
+       updateLineCount('judul');
+       customAlert(`Teks berhasil dikonversi! (Nomor HP tidak berubah)`, 'success');
+     }
+
+    function revertToNormalFont() {
+      const judulTextarea = document.getElementById('judul');
+      if (!originalTextBeforeUnicode || !judulTextarea) {
+        customAlert('Tidak ada teks asli yang tersimpan.', 'warning');
+        return;
+      }
+      judulTextarea.value = originalTextBeforeUnicode;
+      updateLineCount('judul');
+      originalTextBeforeUnicode = '';
+      customAlert('Font berhasil dikembalikan ke semula!', 'success');
+     }
+     
+    // --- Logika Upload Gambar ---
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgmbXWGA2QWh8UWJg3mcoi-cOJkmZ5SiYeHXZe-mGOpE-eLIDYs88uu1DZACR7N6kS/exec";
+    const GITHUB_FRAME_IMAGE_URL = "https://raw.githubusercontent.com/Raisrahman37/Linktautan/main/Link%20Gambar%20Tautan.txt";
+    const GITHUB_PNG_IMAGE_URL = "https://raw.githubusercontent.com/Raisrahman37/Linktautan/main/Png%20Link.txt";
+    const DEFAULT_FRAME_THICKNESS = 120;
+    const DEFAULT_PNG_SIZE = 350;
+    const MAX_FILE_SIZE_KB = 100;
+    
+    let isUploadStopped = false;
+    let availableFrameImageUrls = [];
+    let availablePngUrls = [];
+    
+    function stopUpload(index) {
+        isUploadStopped = true;
+        const stopBtn = document.getElementById(`stopBtn${index}`);
+        const generateBtn = document.getElementById(`generateBtn${index}`);
+        const noFrameBtn = document.getElementById(`generateBtn${index}NoFrame`);
+        const livePreview = document.getElementById(`gambar${index}LivePreview`);
+
+        if (stopBtn) stopBtn.style.display = 'none';
+        if (livePreview) livePreview.style.display = 'none';
+        if (generateBtn) {
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = 'Generate';
+            generateBtn.classList.remove('btn-secondary');
+            generateBtn.classList.add('btn-warning');
+        }
+        if (noFrameBtn) {
+            noFrameBtn.disabled = false;
+            noFrameBtn.innerHTML = 'No Frame';
+            noFrameBtn.classList.remove('btn-secondary');
+            noFrameBtn.classList.add('btn-info');
+        }
+        customAlert('Upload dihentikan!', 'warning');
+    }
+    
+    function getRandomColor() { return '#' + Math.floor(Math.random() * 16777215).toString(16); }
+    
+    async function loadUrlsFromGithub(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.text();
+        return data.split('\n').filter(link => link.trim() !== '');
+      } catch (error) {
+        console.error(`Failed to load URLs from GitHub (${url}):`, error);
+        return [];
+      }
+    }
+    
+    async function addRandomPng(canvas, img, pngLinks, pngSize) {
+        if (!pngLinks || pngLinks.length === 0) {
+            console.warn("Tidak ada link PNG yang tersedia.");
+            return;
+        }
+
+        const pngLink = pngLinks[Math.floor(Math.random() * pngLinks.length)];
+        try {
+            const pngImage = new Image();
+            pngImage.crossOrigin = "anonymous";
+            pngImage.src = pngLink;
+            await new Promise((resolve, reject) => {
+                pngImage.onload = () => resolve();
+                pngImage.onerror = () => {
+                    console.error("Failed to load PNG:", pngLink);
+                    resolve();
+                };
+            });
+
+            const ctx = canvas.getContext('2d');
+            
+            // Hitung tinggi yang proporsional berdasarkan rasio aspek
+            let aspectRatio = pngImage.width / pngImage.height;
+            let proportionalHeight = pngSize / aspectRatio;
+
+            // Definisikan zona penempatan
+            const zones = [
+                { x: 0, y: 0, width: canvas.width / 3, height: canvas.height / 3 }, // Sudut kiri atas
+                { x: (canvas.width / 3) * 2, y: 0, width: canvas.width / 3, height: canvas.height / 3 }, // Sudut kanan atas
+                { x: 0, y: (canvas.height / 3) * 2, width: canvas.width / 3, height: canvas.height / 3 }, // Sudut kiri bawah
+                { x: (canvas.width / 3) * 2, y: (canvas.height / 3) * 2, width: canvas.width / 3, height: canvas.height / 3 }, // Sudut kanan bawah
+                { x: 0, y: canvas.height / 3, width: canvas.width / 3, height: canvas.height / 3 }, // Sisi kiri
+                { x: (canvas.width / 3) * 2, y: canvas.height / 3, width: canvas.width / 3, height: canvas.height / 3 }, // Sisi kanan
+                { x: canvas.width / 3, y: 0, width: canvas.width / 3, height: canvas.height / 3 }, // Sisi atas
+                { x: canvas.width / 3, y: (canvas.height / 3) * 2, width: canvas.width / 3, height: canvas.height / 3 }  // Sisi bawah
+            ];
+
+            // Pilih zona secara acak
+            const selectedZone = zones[Math.floor(Math.random() * zones.length)];
+
+            // Hitung posisi acak di dalam zona yang dipilih
+            let x = selectedZone.x + Math.random() * (selectedZone.width - pngSize);
+            let y = selectedZone.y + Math.random() * (selectedZone.height - proportionalHeight);
+
+            // Gambar PNG
+            ctx.drawImage(pngImage, x, y, pngSize, proportionalHeight);
+
+        } catch (error) {
+            console.error("Error loading or drawing PNG:", error);
+        }
+    }
+    
+    async function compressImage(canvas, mimeType) {
+      return new Promise(resolve => {
+        let quality = 0.9;
+        function tryCompress() {
+          let dataUrl = canvas.toDataURL(mimeType, quality);
+          let sizeInBytes = (dataUrl.length - dataUrl.indexOf(',') - 1) * 3 / 4;
+          if (sizeInBytes > MAX_FILE_SIZE_KB * 1024 && quality > 0.1) {
+            quality -= 0.1;
+            tryCompress();
+          } else {
+            resolve(dataUrl);
+          }
+        }
+        tryCompress();
+      });
+    }
+
+    // Fungsi khusus untuk Gambar Pendukung - hanya kompresi tanpa frame dan PNG
+    async function compressImageOnly(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        reader.onload = e => { img.src = e.target.result; };
+        img.onload = async () => {
+          // Gunakan ukuran asli gambar tanpa frame
+          canvas.width = img.width;
+          canvas.height = img.height;
+          
+          // Gambar langsung tanpa frame
+          ctx.drawImage(img, 0, 0);
+          
+          // Kompresi ke format JPEG
+          const compressedDataUrl = await compressImage(canvas, "image/jpeg");
+          resolve(compressedDataUrl);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    
+    async function addFrame(ctx, canvas, frameThickness) {
+      const frameWidth = frameThickness;
+      
+      // Coba gunakan frame gambar jika tersedia
+      if (availableFrameImageUrls.length > 0) {
+          const frameImageUrl = availableFrameImageUrls[Math.floor(Math.random() * availableFrameImageUrls.length)];
+          try {
+              const frameImage = new Image();
+              frameImage.crossOrigin = "anonymous";
+              frameImage.src = frameImageUrl;
+
+              await new Promise((resolve, reject) => {
+                  frameImage.onload = () => resolve();
+                  frameImage.onerror = () => {
+                      console.error("Failed to load frame image:", frameImageUrl);
+                      // Fallback ke frame berwarna jika gambar gagal dimuat
+                      ctx.fillStyle = getRandomColor();
+                      ctx.fillRect(0, 0, canvas.width, frameWidth);
+                      ctx.fillStyle = getRandomColor();
+                      ctx.fillRect(0, canvas.height - frameWidth, canvas.width, frameWidth);
+                      ctx.fillStyle = getRandomColor();
+                      ctx.fillRect(0, 0, frameWidth, canvas.height);
+                      ctx.fillStyle = getRandomColor();
+                      ctx.fillRect(canvas.width - frameWidth, 0, frameWidth, canvas.height);
+                      resolve();
+                  };
+              });
+
+              const framePattern = ctx.createPattern(frameImage, 'repeat');
+              ctx.fillStyle = framePattern;
+              ctx.fillRect(0, 0, canvas.width, frameWidth);
+              ctx.fillRect(0, canvas.height - frameWidth, canvas.width, frameWidth);
+              ctx.fillRect(0, 0, frameWidth, canvas.height);
+              ctx.fillRect(canvas.width - frameWidth, 0, frameWidth, canvas.height);
+          } catch (error) {
+              console.error("Error loading or applying frame image:", error);
+              // Fallback ke frame berwarna jika terjadi kesalahan
+              ctx.fillStyle = getRandomColor();
+              ctx.fillRect(0, 0, canvas.width, frameWidth);
+              ctx.fillStyle = getRandomColor();
+              ctx.fillRect(0, canvas.height - frameWidth, canvas.width, frameWidth);
+              ctx.fillStyle = getRandomColor();
+              ctx.fillRect(0, 0, frameWidth, canvas.height);
+              ctx.fillStyle = getRandomColor();
+              ctx.fillRect(canvas.width - frameWidth, 0, frameWidth, canvas.height);
+          }
+      } else {
+          // Gunakan frame berwarna sebagai default
+          ctx.fillStyle = getRandomColor(); 
+          ctx.fillRect(0, 0, canvas.width, frameThickness);
+          ctx.fillStyle = getRandomColor(); 
+          ctx.fillRect(0, canvas.height - frameThickness, canvas.width, frameThickness);
+          ctx.fillStyle = getRandomColor(); 
+          ctx.fillRect(0, 0, frameThickness, canvas.height);
+          ctx.fillStyle = getRandomColor(); 
+          ctx.fillRect(canvas.width - frameThickness, 0, frameThickness, canvas.height);
+      }
+    }
+    
+    async function modifyImageWithFrame(file, frameThickness) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        reader.onload = e => { img.src = e.target.result; };
+        img.onload = async () => {
+          canvas.width = img.width + (frameThickness * 2);
+          canvas.height = img.height + (frameThickness * 2);
+          
+          // Tambahkan frame
+          await addFrame(ctx, canvas, frameThickness);
+          
+          // Gambar utama
+          ctx.drawImage(img, frameThickness, frameThickness);
+          
+          // Tambahkan PNG unik jika tersedia
+          if (availablePngUrls.length > 0) {
+            await addRandomPng(canvas, img, availablePngUrls, DEFAULT_PNG_SIZE);
+          }
+          
+          const compressedDataUrl = await compressImage(canvas, "image/jpeg");
+          resolve(compressedDataUrl);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    
+    async function uploadImageToServer(dataUrl, filename) {
+      const base64 = dataUrl.split(",")[1];
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ image: base64, mimetype: "image/jpeg", filename: filename })
+      });
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status} ${response.statusText}`);
+      }
+      const rawResponse = (await response.text()).trim();
+      const parsedResponse = parseUploadResponse(rawResponse);
+      if (!parsedResponse.ok) {
+        throw new Error(parsedResponse.error);
+      }
+      return parsedResponse.url;
+    }
+
+    function isValidHttpUrl(value) {
+      try {
+        const url = new URL((value || '').trim());
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch {
+        return false;
+      }
+    }
+
+    function extractReadableError(rawText) {
+      const trimmed = (rawText || '').trim();
+      if (!trimmed) return 'Respons upload kosong.';
+
+      if (trimmed.startsWith('<!DOCTYPE html') || trimmed.startsWith('<html')) {
+        const doc = new DOMParser().parseFromString(trimmed, 'text/html');
+        const text = (doc.body?.textContent || '').replace(/\s+/g, ' ').trim();
+        const match = text.match(/Exception:\s*(.+?)(?:\s*\(|$)/i);
+        return match ? `Google Script error: ${match[1].trim()}` : 'Upload gagal karena server mengembalikan halaman error, bukan link gambar.';
+      }
+
+      return trimmed;
+    }
+
+    function parseUploadResponse(rawText) {
+      const trimmed = (rawText || '').trim();
+      if (!trimmed) {
+        return { ok: false, error: 'Respons upload kosong.' };
+      }
+
+      if (isValidHttpUrl(trimmed)) {
+        return { ok: true, url: trimmed };
+      }
+
+      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+        try {
+          const parsed = JSON.parse(trimmed);
+          const candidateUrl = parsed?.url || parsed?.link || parsed?.data?.url || '';
+          if (isValidHttpUrl(candidateUrl)) {
+            return { ok: true, url: candidateUrl };
+          }
+
+          const errorMessage = parsed?.error || parsed?.message || parsed?.detail;
+          if (errorMessage) {
+            return { ok: false, error: String(errorMessage) };
+          }
+        } catch {
+          // Lanjut ke fallback error parser.
+        }
+      }
+
+      return { ok: false, error: extractReadableError(trimmed) };
+    }
+    
+    async function processUpload(index) {
+       const fileInput = document.getElementById(`gambar${index}Upload`);
+       const duplicateInput = document.getElementById(`gambar${index}Duplicate`);
+       const targetTextarea = document.getElementById(`gambar${index}`);
+       const generateBtn = document.getElementById(`generateBtn${index}`);
+       const noFrameBtn = document.getElementById(`generateBtn${index}NoFrame`);
+       const stopBtn = document.getElementById(`stopBtn${index}`);
+       const livePreview = document.getElementById(`gambar${index}LivePreview`);
+       
+       if (!fileInput || !fileInput.files.length) { customAlert('Pilih gambar terlebih dahulu!', 'warning'); return; }
+       
+       // Untuk Gambar Pendukung (index 2), tidak ada input duplikasi, jadi set ke 1
+       const duplicateCount = duplicateInput ? (parseInt(duplicateInput.value) || 1) : 1;
+       if (duplicateInput && (duplicateCount < 1 || duplicateCount > 1000)) { 
+         customAlert('Jumlah duplikat harus antara 1-1000!', 'warning'); 
+         return; 
+       }
+       
+       generateBtn.disabled = true;
+       generateBtn.innerHTML = 'Memproses...';
+       generateBtn.classList.replace('btn-warning', 'btn-secondary');
+       if (noFrameBtn) noFrameBtn.disabled = true;
+       stopBtn.style.display = 'inline-block';
+       
+       isUploadStopped = false;
+       const files = Array.from(fileInput.files);
+       const allLinks = [];
+       const uploadErrors = [];
+       const totalImages = files.length * duplicateCount;
+       let processedCount = 0;
+       
+       try {
+         targetTextarea.value = '';
+         for (const file of files) {
+           if (isUploadStopped) break;
+           for (let i = 0; i < duplicateCount; i++) {
+             if (isUploadStopped) break;
+             processedCount++;
+             generateBtn.innerHTML = `Memproses ${processedCount}/${totalImages}...`;
+             
+             // Untuk Gambar Pendukung (index 2), hanya kompresi tanpa frame dan PNG
+             const modifiedDataUrl = index === 2 
+               ? await compressImageOnly(file)
+               : await modifyImageWithFrame(file, DEFAULT_FRAME_THICKNESS);
+             const timestamp = Date.now();
+             const randomNum = Math.floor(Math.random() * 1000);
+             let filename = `${file.name.replace(/\.[^/.]+$/, "")}_${timestamp}_${randomNum}_${i + 1}.jpg`;
+
+             try {
+               const link = await uploadImageToServer(modifiedDataUrl, filename);
+               allLinks.push(link);
+               targetTextarea.value = allLinks.join('\n');
+               updateLineCount(`gambar${index}`);
+
+               livePreview.src = link.trim();
+               livePreview.style.display = 'inline-block';
+               livePreview.onerror = () => { livePreview.src = modifiedDataUrl; };
+               addImageClickListeners();
+             } catch (error) {
+               console.error(`Upload gagal untuk ${filename}:`, error);
+               uploadErrors.push(`${filename}: ${error.message || 'Upload gagal.'}`);
+             }
+           }
+         }
+         if (!isUploadStopped) {
+           if (allLinks.length > 0 && uploadErrors.length === 0) {
+             customAlert(`Upload selesai! ${allLinks.length} gambar berhasil diupload.`, 'success');
+           } else if (allLinks.length > 0) {
+             customAlert(`Upload selesai sebagian. Berhasil ${allLinks.length}, gagal ${uploadErrors.length}.`, 'warning');
+           } else {
+             throw new Error(uploadErrors[0] || 'Tidak ada gambar yang berhasil diupload.');
+           }
+         }
+       } catch (error) {
+         customAlert('Terjadi kesalahan saat upload: ' + error.message, 'error');
+       } finally {
+         generateBtn.disabled = false;
+         generateBtn.innerHTML = 'Generate';
+         generateBtn.classList.replace('btn-secondary', 'btn-warning');
+         if (noFrameBtn) noFrameBtn.disabled = false;
+         stopBtn.style.display = 'none';
+         livePreview.style.display = 'none';
+       }
+     }
+
+    // Fungsi khusus untuk Generate Link Tanpa Frame - hanya kompresi tanpa frame dan PNG
+    async function processUploadWithoutFrame(index) {
+       const fileInput = document.getElementById(`gambar${index}Upload`);
+       const duplicateInput = document.getElementById(`gambar${index}Duplicate`);
+       const targetTextarea = document.getElementById(`gambar${index}`);
+       const generateBtn = document.getElementById(`generateBtn${index}NoFrame`);
+       const frameBtn = document.getElementById(`generateBtn${index}`);
+       const stopBtn = document.getElementById(`stopBtn${index}`);
+       const livePreview = document.getElementById(`gambar${index}LivePreview`);
+       
+       if (!fileInput || !fileInput.files.length) { customAlert('Pilih gambar terlebih dahulu!', 'warning'); return; }
+       
+       const duplicateCount = duplicateInput ? (parseInt(duplicateInput.value) || 1) : 1;
+       if (duplicateInput && (duplicateCount < 1 || duplicateCount > 1000)) { 
+         customAlert('Jumlah duplikat harus antara 1-1000!', 'warning'); 
+         return; 
+       }
+       
+       generateBtn.disabled = true;
+       generateBtn.innerHTML = 'Memproses...';
+       generateBtn.classList.replace('btn-info', 'btn-secondary');
+       if (frameBtn) frameBtn.disabled = true;
+       stopBtn.style.display = 'inline-block';
+       
+       isUploadStopped = false;
+       const files = Array.from(fileInput.files);
+       const allLinks = [];
+       const uploadErrors = [];
+       const totalImages = files.length * duplicateCount;
+       let processedCount = 0;
+       
+       try {
+         targetTextarea.value = '';
+         for (const file of files) {
+           if (isUploadStopped) break;
+           for (let i = 0; i < duplicateCount; i++) {
+             if (isUploadStopped) break;
+             processedCount++;
+             generateBtn.innerHTML = `Memproses ${processedCount}/${totalImages}...`;
+             
+             // Hanya kompresi tanpa frame dan PNG
+             const modifiedDataUrl = await compressImageOnly(file);
+             const timestamp = Date.now();
+             const randomNum = Math.floor(Math.random() * 1000);
+             let filename = `${file.name.replace(/\.[^/.]+$/, "")}_noframe_${timestamp}_${randomNum}_${i + 1}.jpg`;
+
+             try {
+               const link = await uploadImageToServer(modifiedDataUrl, filename);
+               allLinks.push(link);
+               targetTextarea.value = allLinks.join('\n');
+               updateLineCount(`gambar${index}`);
+
+               livePreview.src = link.trim();
+               livePreview.style.display = 'inline-block';
+               livePreview.onerror = () => { livePreview.src = modifiedDataUrl; };
+               addImageClickListeners();
+             } catch (error) {
+               console.error(`Upload gagal untuk ${filename}:`, error);
+               uploadErrors.push(`${filename}: ${error.message || 'Upload gagal.'}`);
+             }
+           }
+         }
+         if (!isUploadStopped) {
+           if (allLinks.length > 0 && uploadErrors.length === 0) {
+             customAlert(`Upload selesai! ${allLinks.length} gambar berhasil diupload (tanpa frame).`, 'success');
+           } else if (allLinks.length > 0) {
+             customAlert(`Upload selesai sebagian. Berhasil ${allLinks.length}, gagal ${uploadErrors.length}.`, 'warning');
+           } else {
+             throw new Error(uploadErrors[0] || 'Tidak ada gambar yang berhasil diupload.');
+           }
+         }
+       } catch (error) {
+         customAlert('Terjadi kesalahan saat upload: ' + error.message, 'error');
+       } finally {
+         generateBtn.disabled = false;
+         generateBtn.innerHTML = 'No Frame';
+         generateBtn.classList.replace('btn-secondary', 'btn-info');
+         if (frameBtn) frameBtn.disabled = false;
+         stopBtn.style.display = 'none';
+         livePreview.style.display = 'none';
+       }
+     }
+    
+    function updateImageCounter(inputId, counterId) {
+       const input = document.getElementById(inputId);
+       const counter = document.getElementById(counterId);
+       if (input && counter) {
+         const fileCount = input.files.length;
+         counter.textContent = fileCount > 0 ? `${fileCount} gambar dipilih` : '';
+         counter.style.color = fileCount > 0 ? '#28a745' : '';
+       }
+     }
+     
+     function showImagePreview(files, previewContainerId) {
+       const previewContainer = document.getElementById(previewContainerId);
+       if (!previewContainer) return;
+       previewContainer.innerHTML = '';
+       if (files.length === 0) {
+         previewContainer.style.display = 'none';
+         return;
+       }
+       previewContainer.style.display = 'flex';
+       
+       Array.from(files).forEach((file, index) => {
+         if (file.type.startsWith('image/')) {
+           const reader = new FileReader();
+           reader.onload = e => {
+             const previewItem = document.createElement('div');
+             previewItem.className = 'image-preview-item';
+             previewItem.innerHTML = `
+                <img src="${e.target.result}" class="image-preview" title="${file.name}" onclick="openImageModal('${e.target.result}', '${file.name}')">
+                <button class="image-preview-remove" title="Hapus gambar" onclick="removeImageFromPreview(${index}, '${previewContainerId}')">×</button>
+             `;
+             previewContainer.appendChild(previewItem);
+           };
+           reader.readAsDataURL(file);
+         }
+       });
+     }
+     
+     function removeImageFromPreview(index, previewContainerId) {
+       const inputId = previewContainerId.replace('Preview', 'Upload');
+       const input = document.getElementById(inputId);
+       if (!input) return;
+       
+       const dt = new DataTransfer();
+       Array.from(input.files).forEach((file, i) => { if (i !== index) dt.items.add(file); });
+       input.files = dt.files;
+       
+       showImagePreview(input.files, previewContainerId);
+       updateImageCounter(inputId, previewContainerId.replace('Preview', 'Count'));
+     }
+    
+    function setupListenersForField(index) {
+        const fileInput = document.getElementById(`gambar${index}Upload`);
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                updateImageCounter(`gambar${index}Upload`, `gambar${index}Count`);
+                showImagePreview(this.files, `gambar${index}Preview`);
+            });
+        }
+    }
+
+    let currentFullscreenFieldId = null;
+
+    function openFullscreenEditor(fieldId) {
+      const targetTextarea = document.getElementById(fieldId);
+      const modal = document.getElementById('fullscreenEditorModal');
+      
+      const modalTextarea = document.getElementById('fullscreenEditorTextarea');
+      const titleElement = document.getElementById('fullscreenEditorTitle');
+      const gutter = document.getElementById('fullscreenEditorLineNumbers');
+      const wrapper = document.getElementById('fullscreenEditorWrapper');
+      // Hide line numbers specifically for Deskripsi (fullscreen)
+      if (fieldId === 'deskripsi') {
+        if (gutter) {
+          gutter.style.display = 'none';
+          gutter.textContent = '';
+        }
+        if (wrapper) wrapper.style.gridTemplateColumns = '1fr';
+      } else {
+        if (gutter) gutter.style.display = '';
+        if (wrapper) wrapper.style.gridTemplateColumns = '';
+      }
+
+      if (!targetTextarea || !modal || !modalTextarea) return;
+
+      currentFullscreenFieldId = fieldId;
+      modalTextarea.value = targetTextarea.value;
+      modalTextarea.setAttribute('data-target', fieldId);
+      modalTextarea.scrollTop = targetTextarea.scrollTop || 0;
+
+      if (fieldId !== 'deskripsi') {
+        updateFullscreenLineNumbers();
+        syncFullscreenScroll();
+      }
+
+      if (titleElement) {
+        const label = document.querySelector(`label[for="${fieldId}"]`);
+        const labelText = label ? label.textContent.trim() : 'Konten';
+        titleElement.textContent = 'Edit ' + labelText;
+      }
+
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        modalTextarea.focus();
+        if (fieldId !== 'deskripsi') {
+          updateFullscreenLineNumbers();
+          syncFullscreenScroll();
+        }
+      }, 0);
+    }
+
+    function closeFullscreenEditor(saveChanges = false) {
+      const modal = document.getElementById('fullscreenEditorModal');
+      
+      const modalTextarea = document.getElementById('fullscreenEditorTextarea');
+      if (!modal || !modalTextarea) return;
+
+      if (saveChanges && currentFullscreenFieldId) {
+        const targetTextarea = document.getElementById(currentFullscreenFieldId);
+        if (targetTextarea) {
+          targetTextarea.value = modalTextarea.value;
+          const inputEvent = new Event('input', { bubbles: true });
+          targetTextarea.dispatchEvent(inputEvent);
+        }
+      }
+
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      modalTextarea.removeAttribute('data-target');
+      currentFullscreenFieldId = null;
+    }
+    function updateKategoriTextarea() {
+      const kategoriSelect = document.getElementById('kategori');
+      const kategoriTextarea = document.getElementById('kategoriTerpilih');
+      if (kategoriSelect && kategoriTextarea) {
+        const selectedValue = kategoriSelect.value;
+        if (selectedValue) {
+          const currentContent = kategoriTextarea.value;
+          const categories = currentContent.split('\n').filter(cat => cat.trim() !== '');
+          if (!categories.includes(selectedValue)) {
+            kategoriTextarea.value = currentContent.trim() === '' ? selectedValue : `${currentContent}\n${selectedValue}`;
+          }
+        }
+      }
+    }
+
+    function clearKategoriTerpilih() {
+      const kategoriTextarea = document.getElementById('kategoriTerpilih');
+      if (kategoriTextarea) {
+        kategoriTextarea.value = '';
+        customAlert('Kategori terpilih telah dihapus!', 'success');
+      }
+    }
+
+    function openImageModal(imageSrc, title = 'Preview Gambar', description = 'Klik di luar gambar atau tombol X untuk menutup') {
+      const modal = document.getElementById('imageModal');
+      document.getElementById('modalImage').src = imageSrc;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDescription').textContent = description;
+      modal.style.display = 'flex';
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeImageModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('show');
+      document.body.style.overflow = 'auto';
+      setTimeout(() => { if (!modal.classList.contains('show')) modal.style.display = 'none'; }, 300);
+    }
+    
+    function updateImagePreview(index) {
+      const textarea = document.getElementById(`gambar${index}`);
+      const preview = document.getElementById(`gambar${index}LivePreview`);
+      if (textarea && preview) {
+        const firstUrl = textarea.value.split('\n')[0]?.trim();
+        if (isValidImageUrl(firstUrl)) {
+          preview.src = firstUrl;
+          preview.style.display = 'inline-block';
+          addImageClickListeners();
+        } else {
+          preview.style.display = 'none';
+        }
+      }
+    }
+    
+    function isValidImageUrl(url) {
+      if (!url || typeof url !== 'string') return false;
+      try { new URL(url); } catch { return false; }
+      return /\.(jpg|jpeg|png|gif|bmp|webp|svg)(\?.*)?$/i.test(url) || /[?&](image|img|photo|pic)/i.test(url) || url.includes('imgur') || url.includes('cloudinary') || url.includes('azkazamdigital');
+    }
+    
+    function addImageClickListeners() {
+        for (let i = 1; i <= 10; i++) {
+            const preview = document.getElementById(`gambar${i}LivePreview`);
+            if (preview) {
+                preview.onclick = function() {
+                    if (this.src && this.style.display !== 'none') {
+                        openImageModal(this.src, `Preview Gambar ${i}`, `Gambar ${i} yang akan digunakan untuk posting`);
+                    }
+                };
+            }
+        }
+    }
+    
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const imageModal = document.getElementById('imageModal');
+        if (imageModal && imageModal.classList.contains('show')) {
+          closeImageModal();
+        }
+
+        const fullscreenModal = document.getElementById('fullscreenEditorModal');
+      
+        if (fullscreenModal && fullscreenModal.style.display === 'block') {
+          closeFullscreenEditor(false);
+        }
+      }
+    });
+    
+
+    
+
+
+    window.onclick = function(event) {
+      const aiModal = document.getElementById('aiContentModal');
+      const lokasiModal = document.getElementById('lokasiModal');
+      const imageModal = document.getElementById('imageModal');
+      const fullscreenModal = document.getElementById('fullscreenEditorModal');
+      
+      if (event.target === aiModal) closeAIContentModal();
+      if (event.target === lokasiModal) closeLokasiModal();
+      if (event.target === imageModal) closeImageModal();
+      if (event.target === fullscreenModal) closeFullscreenEditor(false);
+    }
+  
+    // === Patch: Line numbers for fullscreen editor ===
+    function updateFullscreenLineNumbers() {
+      const ta = document.getElementById('fullscreenEditorTextarea');
+      const gutter = document.getElementById('fullscreenEditorLineNumbers');
+      if (!ta || !gutter) return;
+      const lines = ta.value.split('\n').length || 1;
+      let nums = '';
+      for (let i = 1; i <= lines; i++) nums += i + '\n';
+      gutter.textContent = nums.trimEnd();
+      const digitCount = String(lines).length;
+      if (gutter && digitCount) {
+        const minW = Math.max(44, digitCount * 12 + 20);
+        gutter.style.minWidth = minW + 'px';
+      }
+    }
+    function syncFullscreenScroll() {
+      const ta = document.getElementById('fullscreenEditorTextarea');
+      const gutter = document.getElementById('fullscreenEditorLineNumbers');
+      if (gutter) gutter.scrollTop = ta.scrollTop;
+    }
+
+  </script>
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="mt-5 py-3 text-center" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; color: #6c757d; font-size: 0.9rem;">
+    <div class="container">
+      <p class="mb-0">© Copyright | <a href="https://www.azkazamdigital.com" target="_blank" style="color: #007bff; text-decoration: none;">www.azkazamdigital.com</a></p>
+    </div>
+  </footer>
+
+</body>
+
+</html>
