@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="DATA POSTING"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/textSlot"
+            android:layout_marginTop="8dp"
+            android:text="Slot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editSlot"
+            android:hint="Nama/key slot"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editJudul"
+            android:hint="Judul"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editHarga"
+            android:hint="Harga"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editKategori"
+            android:hint="Kategori"
+            android:text="Mebel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editKategoriTerpilih"
+            android:hint="Kategori Terpilih"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editKondisi"
+            android:hint="Kondisi"
+            android:text="Baru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editDeskripsi"
+            android:hint="Deskripsi"
+            android:gravity="top"
+            android:minLines="4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editGambar1"
+            android:hint="Gambar 1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editGambar2"
+            android:hint="Gambar 2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editLokasi"
+            android:hint="Lokasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editHashtag"
+            android:hint="Hashtag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editDelay"
+            android:hint="Delay"
+            android:text="25"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editGambar1Duplicate"
+            android:hint="Duplikasi Gambar 1"
+            android:text="1"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <CheckBox
+            android:id="@+id/checkRandomGambar1"
+            android:text="Random Gambar 1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <CheckBox
+            android:id="@+id/checkRandomLokasi"
+            android:text="Random Lokasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:text="SIMPAN"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/buttonLoad"
+                android:text="MUAT"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/buttonReset"
+                android:text="RESET"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textStatus"
+            android:layout_marginTop="12dp"
+            android:text="Siap."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</ScrollView>
